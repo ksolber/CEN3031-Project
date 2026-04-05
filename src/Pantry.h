@@ -1,13 +1,14 @@
-//Pantry.h
+#pragma once
+#include <string>
 
-using namespace std:
+using namespace std;
 
-struct Pantry 
+struct Pantry
 {
     string name;
     string address;
 
-    //Coordinates (if we can gather it)
+    //Coordinates
     double latitude;
     double longitude;
 
@@ -29,5 +30,13 @@ struct Pantry
 
     //hours info
     string hours;
+    string description;
+    string eligibility;
+    string phone;
+    string email;
+    string website;
     string notes;
 };
+
+
+string getPantryStatus(bool isOpen);

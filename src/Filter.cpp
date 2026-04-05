@@ -1,30 +1,42 @@
-//Filter.cpp
-
 #include "Filter.h"
 #include "Pantry.h"
 
-bool matchesFilters(const Pantry& p, const FilterConfiguration& f) 
+using namespace std;
+
+bool matchesFilters(const Pantry& p, const FilterOptions& f) 
 {
     if (f.requireHalal 
      && !p.halal) { return false; }
 
     if (f.requireKosher 
-     && !p.kosher) { return false; }
+     && p.kosher == false) { return false; }
 
     if (f.requireVegan 
-     && !p.vegan)  { return false; }
+     && p.vegan == false)  { return false; }
 
     if (f.requireVegetarian
-     && !p.vegetarian)  { return false; }
+     && p.vegetarian == false)  { return false; }
 
     if (f.requireCarnivore 
-     && !p.carnivore)  { return false; }
+     && p.carnivore == false)  { return false; }
 
     if (f.requireHandicapAccessible 
-     && !p.handicapAccessible)  { return false; }
+     && p.handicapAccessible == false)  { return false; }
 
-    if (f.maxDistance >= 0 
-     && p.latitude > f.maxDistance) { return false; } // (wip)
+    //if (f.maxDistance >= 0.0 
+    //&& p.latitude > f.maxDistance) { return false; } // (wip)
 
     return true;
+}
+
+vector<Pantry> filterPantries(const vector<Pantry>& pantries, const FilterOptions& f)
+{
+    vector<Pantry> results;
+
+    for (const Pantry& pantry : pantries)
+    {
+        if (matchesFilters(pantry, f))	{ results.push_back(pantry); }
+    }
+
+    return results;
 }
