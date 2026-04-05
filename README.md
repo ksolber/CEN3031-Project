@@ -61,7 +61,6 @@ To ensure a consistent development environment, this project is developed on **U
 1. **Clone the repository:**
    ```bash
    git clone https://github.com/ksolber/CEN3031-Project.git
-   cd CEN3031-Project
    ```
 
 2. **Environment Variables:**
