@@ -23,10 +23,25 @@ For students who need a fast and trustworthy way to find food assistance. Gators
 
 ## Prerequisites
 
-To run this project locally, you will need:
-- C++ compiler
-- Python
-- MySQL Server
+To ensure a consistent development environment, this project is developed on **Ubuntu**. 
+
+### Required Tools
+- **Ubuntu / WSL2 (Ubuntu)**: Required for C++ build tools and general development.
+  ```bash
+  # Windows users: Install WSL and Ubuntu (Run in PowerShell as Administrator)
+  wsl --install -d Ubuntu
+  ```
+- **Docker & Docker Compose**: Used for spinning up the local MySQL database environment consistently. Please follow the installation instructions on the [official Docker website](https://docs.docker.com/get-docker/).
+- **uv**: A fast Python package manager and environment resolver.
+  ```bash
+  # Install uv (Linux/macOS/WSL)
+  curl -LsSf https://astral.sh/uv/install.sh | sh
+  ```
+- **C++ Build Tools**: Required for local C++ compilation.
+  ```bash
+  # Install essential build tools
+  sudo apt update && sudo apt install build-essential
+  ```
 
 ## Installation & Setup
 
@@ -36,17 +51,48 @@ To run this project locally, you will need:
    cd CEN3031-Project
    ```
 
-2. **Database Setup:**
-   - Ensure MySQL is running and set up the required databases and tables (e.g., executing setup SQL scripts).
+2. **Environment Variables:**
+   Create a `.env` file in the root directory and configure your API keys and database credentials. Defaults for local Docker development:
+   ```env
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_USER=root
+   DB_PASSWORD=root_password
+   DB_NAME=gatorskitchen
+   ```
 
-3. **Environment Variables:**
-   - Create a `.env` file in the root directory and configure your API keys and database credentials.
+3. **Database Setup (Docker):**
+   Start the local MySQL database container in the background:
+   ```bash
+   docker compose up -d
+   ```
 
-4. **Build and Run:**
+4. **Python Dependencies (uv):**
+   Set up your isolated Python environment:
+   ```bash
+   uv venv
+   source .venv/bin/activate
+   # Install dependencies (when added later)
+   # uv pip install -r requirements.txt
+   ```
+
+5. **Build and Run C++ Tests:**
    Currently, the project is in the testing phase. You can build and run the tests using:
    ```bash
    make test
    ```
+
+## Formatting & Linting (Python)
+
+For Python code, we use tasks managed via `uv` to maintain code quality. Please run these before submitting a Pull Request.
+
+```bash
+# Format Python code
+uv run task format
+
+# Lint Python code
+uv run task lint
+```
 
 ## Testing
 
