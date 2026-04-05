@@ -19,11 +19,18 @@ TEST_SOURCES = $(wildcard $(TEST_DIR)/test_*.cpp)
 # Create a list of executable file names from the test source files
 TEST_EXECS = $(patsubst $(TEST_DIR)/%.cpp, $(BUILD_DIR)/%, $(TEST_SOURCES))
 
-.PHONY: all test clean
+# Files for formatting and linting
+FORMAT_FILES = $(wildcard $(SRC_DIR)/*.cpp $(SRC_DIR)/*.h $(TEST_DIR)/*.cpp)
+LINT_FILES = $(wildcard $(SRC_DIR)/*.cpp $(TEST_DIR)/*.cpp)
+PYTHON_FILES = $(wildcard $(SRC_DIR)/*.py $(TEST_DIR)/*.py *.py)
+
+.PHONY: all test clean format lint
 
 all:
 	@echo "Use 'make test' to build and run all tests."
 	@echo "Use 'make clean' to remove build artifacts."
+	@echo "Use 'make format' to format code with clang-format."
+	@echo "Use 'make lint' to check code with clang-tidy."
 
 # Target to run all tests
 # First, it builds all test executables, then it runs them one by one.
@@ -53,3 +60,27 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
 clean:
 	@echo "Cleaning up build files..."
 	@rm -rf $(BUILD_DIR)
+
+# Format all C++ and Python files
+format:
+	@echo "Formatting C++ source files..."
+	clang-format -i $(FORMAT_FILES)
+	@if [ -n "$(PYTHON_FILES)" ]; then \
+		echo "Formatting Python files..."; \
+		uv run task format; \
+	else \
+		echo "Skipping Python formatting (no Python files found)."; \
+	fi
+	@echo "Successfully formatted all files."
+
+# Run linting on all C++ and Python files
+lint:
+	@echo "Linting C++ source files..."
+	clang-tidy $(LINT_FILES) -- -I$(SRC_DIR)
+	@if [ -n "$(PYTHON_FILES)" ]; then \
+		echo "Linting Python files..."; \
+		uv run task lint; \
+	else \
+		echo "Skipping Python linting (no Python files found)."; \
+	fi
+	@echo "Successfully linted all files."
