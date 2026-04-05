@@ -80,12 +80,6 @@ To ensure a consistent development environment, this project is developed on **U
    # uv pip install -r requirements.txt
    ```
 
-5. **Build and Run C++ Tests:**
-   Currently, the project is in the testing phase. You can build and run the tests using:
-   ```bash
-   make test
-   ```
-
 ## Formatting & Linting
 
 Before committing your changes or submitting a Pull Request, please run the formatting and linting checks. These commands will automatically format and lint both C++ (`clang-format`, `clang-tidy`) and Python (`uv`) code at the same time.
