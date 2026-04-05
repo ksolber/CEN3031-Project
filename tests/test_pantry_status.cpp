@@ -37,7 +37,7 @@ void testPantryIsUnavailable() {
   std::cout << "TEST-02 Passed: Pantry is Unavailable." << std::endl;
 }
 
-int main() {
+int testMain() {
   testPantryIsAvailable();
   testPantryIsUnavailable();
   return 0;
