@@ -37,6 +37,15 @@ To ensure a consistent development environment, this project is developed on **U
   # Install uv (Linux/macOS/WSL)
   curl -LsSf https://astral.sh/uv/install.sh | sh
   ```
+- **Python 3**: Required for running Python.
+  ```bash
+  # Install Python 3
+  sudo apt update && sudo apt install python3 python3-venv
+  ```
+  **Check the version of Python**: Check if the Python is installed Correctly.
+  ```bash
+  python3 --version
+ ```
 - **C++ Build Tools**: Required for local C++ compilation.
   ```bash
   # Install essential build tools
