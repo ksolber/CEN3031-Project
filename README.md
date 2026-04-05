@@ -17,13 +17,13 @@ For students who need a fast and trustworthy way to find food assistance. Gators
 
 - **Languages:** C++, Python
 - **Database:** MySQL
-- **External Integrations:** 
+- **External Integrations:**
   - External Map URL Schemes (Google Maps / Apple Maps redirection)
   - Student Authentication System
 
 ## Prerequisites
 
-To ensure a consistent development environment, this project is developed on **Ubuntu**. 
+To ensure a consistent development environment, this project is developed on **Ubuntu**.
 
 ### Required Tools
 - **Ubuntu / WSL2 (Ubuntu)**: Required for C++ build tools and general development.
@@ -42,6 +42,10 @@ To ensure a consistent development environment, this project is developed on **U
   # Install essential build tools
   sudo apt update && sudo apt install build-essential
   ```
+- **C++ Formatting & Linting Tools**: Required for `make format` and `make lint` commands to format and lint C++ code.
+  ```bash
+  # Install clang-format and clang-tidy
+  sudo apt install clang-format clang-tidy
 
 ## Installation & Setup
 
@@ -82,16 +86,17 @@ To ensure a consistent development environment, this project is developed on **U
    make test
    ```
 
-## Formatting & Linting (Python)
+## Formatting & Linting
 
-For Python code, we use tasks managed via `uv` to maintain code quality. Please run these before submitting a Pull Request.
+Before committing your changes or submitting a Pull Request, please run the formatting and linting checks. These commands will automatically format and lint both C++ (`clang-format`, `clang-tidy`) and Python (`uv`) code at the same time.
+If your project currently has no Python (`.py`) files, the Python checks will be safely skipped without causing an error.
 
 ```bash
-# Format Python code
-uv run task format
+# Format C++ and Python code
+make format
 
-# Lint Python code
-uv run task lint
+# Lint C++ and Python code
+make lint
 ```
 
 ## Testing
