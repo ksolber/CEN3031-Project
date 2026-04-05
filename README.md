@@ -31,7 +31,7 @@ To ensure a consistent development environment, this project is developed on **U
   # Windows users: Install WSL and Ubuntu (Run in PowerShell as Administrator)
   wsl --install -d Ubuntu
   ```
-- **Docker & Docker Compose**: Used for spinning up the local MySQL database environment consistently. Please follow the installation instructions on the [official Docker website](https://docs.docker.com/get-docker/).
+- **Docker**: Used for spinning up the local MySQL database environment consistently. Please follow the installation instructions on the [official Docker website](https://docs.docker.com/get-docker/).
 - **uv**: A fast Python package manager and environment resolver.
   ```bash
   # Install uv (Linux/macOS/WSL)
