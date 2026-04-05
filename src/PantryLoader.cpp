@@ -5,98 +5,82 @@
 #include <regex>
 #include <sstream>
 
+using namespace std;
+
 namespace
 {
-    std::string readEntireFile(const std::string& filename)
+    string readEntireFile(const string& filename)
     {
-        std::ifstream inFile(filename);
-        if (!inFile.is_open())
-        {
-            return "";
-        }
+        ifstream inFile(filename);
+        if (!inFile.is_open())    { return ""; }
 
-        std::ostringstream buffer;
+        ostringstream buffer;
         buffer << inFile.rdbuf();
         return buffer.str();
     }
 
-    std::string extractStringValue(const std::string& block, const std::string& key)
+    string extractStringValue(const string& block, const string& key)
     {
-        std::regex pattern("\"" + key + "\"\\s*:\\s*(None|\"([^\"]*)\")");
-        std::smatch match;
+        regex pattern("\"" + key + "\"\\s*:\\s*(None|\"([^\"]*)\")");
+        smatch match;
 
-        if (std::regex_search(block, match, pattern))
+        if (regex_search(block, match, pattern))
         {
-            if (match[1] == "None")
-            {
-                return "";
-            }
+            if (match[1] == "None")    { return ""; }
 
-            if (match.size() >= 3)
-            {
-                return match[2].str();
-            }
+            if (match.size() >= 3)    { return match[2].str(); }
         }
 
         return "";
     }
 
-    double extractDoubleValue(const std::string& block, const std::string& key)
+    double extractDoubleValue(const string& block, const string& key)
     {
-        std::regex pattern("\"" + key + "\"\\s*:\\s*(-?\\d+(?:\\.\\d+)?)");
-        std::smatch match;
+        regex pattern("\"" + key + "\"\\s*:\\s*(-?\\d+(?:\\.\\d+)?)");
+        smatch match;
 
-        if (std::regex_search(block, match, pattern))
+        if (regex_search(block, match, pattern))
         {
-            return std::stod(match[1].str());
+            return stod(match[1].str());
         }
 
         return 0.0;
     }
 
-    bool extractBoolValue(const std::string& block, const std::string& key)
+    bool extractBoolValue(const string& block, const string& key)
     {
-        std::regex pattern("\"" + key + "\"\\s*:\\s*(true|false)");
-        std::smatch match;
+        regex pattern("\"" + key + "\"\\s*:\\s*(true|false)");
+        smatch match;
 
-        if (std::regex_search(block, match, pattern))
-        {
-            return match[1].str() == "true";
-        }
+        if (regex_search(block, match, pattern))    { return match[1].str() == "true"; }
 
         return false;
     }
 
-    std::string extractDescription(const std::string& block)
+    string extractDescription(const string& block)
     {
-        std::regex pattern("\"description\"\\s*:\\s*\\(([\\s\\S]*?)\\)\\s*,");
-        std::smatch match;
+        regex pattern("\"description\"\\s*:\\s*\\(([\\s\\S]*?)\\)\\s*,");
+        smatch match;
 
-        if (!std::regex_search(block, match, pattern))
-        {
-            return "";
-        }
+        if (!regex_search(block, match, pattern))    { return ""; }
 
-        std::string descriptionBlock = match[1].str();
-        std::regex stringPattern("\"([^\"]*)\"");
-        std::sregex_iterator begin(descriptionBlock.begin(), descriptionBlock.end(), stringPattern);
-        std::sregex_iterator end;
+        string descriptionBlock = match[1].str();
+        regex stringPattern("\"([^\"]*)\"");
+        sregex_iterator begin(descriptionBlock.begin(), descriptionBlock.end(), stringPattern);
+        sregex_iterator end;
 
-        std::string description;
-        for (std::sregex_iterator it = begin; it != end; ++it)
-        {
-            description += (*it)[1].str();
-        }
+        string description;
+        for (sregex_iterator it = begin; it != end; ++it)    { description += (*it)[1].str(); }
 
         return description;
     }
 
-    std::vector<std::string> splitIntoObjectBlocks(const std::string& fileContents)
+    vector<string> splitIntoObjectBlocks(const string& fileContents)
     {
-        std::vector<std::string> blocks;
+        vector<string> blocks;
         bool insideObject = false;
         int braceDepth = 0;
-        std::string current;
+        string current;
 
         for (char ch : fileContents)
         {
@@ -107,19 +91,18 @@ namespace
                     insideObject = true;
                     current.clear();
                 }
+                
                 braceDepth++;
             }
 
-            if (insideObject)
-            {
-                current += ch;
-            }
+            if (insideObject)    { current += ch; }
 
             if (ch == '}')
             {
                 braceDepth--;
 
-                if (insideObject && braceDepth == 0)
+                if (insideObject 
+                 && braceDepth == 0)
                 {
                     blocks.push_back(current);
                     current.clear();
@@ -131,7 +114,7 @@ namespace
         return blocks;
     }
 
-    Pantry parsePantryBlock(const std::string& block)
+    Pantry parsePantryBlock(const string& block)
     {
         Pantry pantry;
 
@@ -158,27 +141,24 @@ namespace
     }
 }
 
-std::vector<Pantry> loadPantriesFromLocationFile(const std::string& filename)
+vector<Pantry> loadPantriesFromLocationFile(const string& filename)
 {
-    std::vector<Pantry> pantries;
-    std::string fileContents = readEntireFile(filename);
+    vector<Pantry> pantries;
+    string fileContents = readEntireFile(filename);
 
     if (fileContents.empty())
     {
-        std::cerr << "Error: Could not open or read file: " << filename << '\n';
+        cerr << "Error: Could not open or read file: " << filename << '\n';
         return pantries;
     }
 
-    std::vector<std::string> blocks = splitIntoObjectBlocks(fileContents);
+    vector<string> blocks = splitIntoObjectBlocks(fileContents);
 
-    for (const std::string& block : blocks)
+    for (const string& block : blocks)
     {
         Pantry pantry = parsePantryBlock(block);
 
-        if (!pantry.name.empty())
-        {
-            pantries.push_back(pantry);
-        }
+        if (!pantry.name.empty())    { pantries.push_back(pantry); }
     }
 
     return pantries;
