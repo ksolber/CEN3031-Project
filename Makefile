@@ -13,24 +13,44 @@ BUILD_DIR = build
 SOURCES = $(wildcard $(SRC_DIR)/*.cpp)
 # Create a list of object files for the sources, to be placed in the build directory
 OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(SOURCES))
+# Filter out main.o from OBJECTS for test builds
+TEST_OBJECTS = $(filter-out $(BUILD_DIR)/main.o, $(OBJECTS))
 
 # Find all test source files in the tests directory
 TEST_SOURCES = $(wildcard $(TEST_DIR)/test_*.cpp)
 # Create a list of executable file names from the test source files
 TEST_EXECS = $(patsubst $(TEST_DIR)/%.cpp, $(BUILD_DIR)/%, $(TEST_SOURCES))
 
+# Application executable name
+APP_EXEC = $(BUILD_DIR)/GatorsKitchen
+
 # Files for formatting and linting
 FORMAT_FILES = $(wildcard $(SRC_DIR)/*.cpp $(SRC_DIR)/*.h $(TEST_DIR)/*.cpp)
 LINT_FILES = $(wildcard $(SRC_DIR)/*.cpp $(TEST_DIR)/*.cpp)
 PYTHON_FILES = $(wildcard $(SRC_DIR)/*.py $(TEST_DIR)/*.py *.py)
 
-.PHONY: all test clean format lint
+.PHONY: all test build run clean format lint
 
 all:
+	@echo "Use 'make build' to compile the main application."
+	@echo "Use 'make run' to run the main application."
 	@echo "Use 'make test' to build and run all tests."
 	@echo "Use 'make clean' to remove build artifacts."
 	@echo "Use 'make format' to format code with clang-format."
 	@echo "Use 'make lint' to check code with clang-tidy."
+
+# Target to build the main application
+build: $(APP_EXEC)
+
+$(APP_EXEC): $(OBJECTS)
+	@echo "Building application executable: $@"
+	@mkdir -p $(@D)
+	$(CXX) $(CXXFLAGS) -o $@ $^
+
+# Target to run the main application
+run: build
+	@echo "Running GatorsKitchen..."
+	@./$(APP_EXEC)
 
 # Target to run all tests
 # First, it builds all test executables, then it runs them one by one.
@@ -44,7 +64,7 @@ test: $(TEST_EXECS)
 
 # Generic rule to build a test executable from its source file
 # Example: builds 'build/test_pantry_status' from 'tests/test_pantry_status.cpp' and the object files from src
-$(BUILD_DIR)/test_%: $(TEST_DIR)/test_%.cpp $(OBJECTS)
+$(BUILD_DIR)/test_%: $(TEST_DIR)/test_%.cpp $(TEST_OBJECTS)
 	@echo "Building test executable: $@"
 	@mkdir -p $(@D)
 	$(CXX) $(CXXFLAGS) -o $@ $^

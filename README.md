@@ -107,11 +107,20 @@ make format
 make lint
 ```
 
-## Testing
+## Testing & Running
 
-To run the automated tests for the project (e.g., pantry status tests):
+To run the automated tests for the project:
 ```bash
 make test
+```
+
+To build and run the main application (GatorsKitchen):
+```bash
+# Build the application
+make build
+
+# Run the application
+make run
 ```
 
 ## Development Guidelines
