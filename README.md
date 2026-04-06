@@ -31,12 +31,15 @@ To ensure a consistent development environment, this project is developed on **U
    # Windows users: Install WSL and Ubuntu (Run in PowerShell as Administrator)
    wsl --install -d Ubuntu
    ```
+
 2. **Docker**: Used for spinning up the local MySQL database environment consistently. Please follow the installation instructions on the [official Docker website](https://docs.docker.com/get-docker/).
+
 3. **uv**: A fast Python package manager and environment resolver.
    ```bash
    # Install uv (Linux/macOS/WSL)
    curl -LsSf https://astral.sh/uv/install.sh | sh
    ```
+
 4. **Python 3**: Required for running Python.
    ```bash
    # Install Python 3
@@ -46,11 +49,13 @@ To ensure a consistent development environment, this project is developed on **U
    ```bash
    python3 --version
    ```
+
 5. **C++ Build Tools**: Required for local C++ compilation.
    ```bash
    # Install essential build tools
    sudo apt update && sudo apt install build-essential
    ```
+   
 6. **C++ Formatting & Linting Tools**: Required for `make format` and `make lint` commands to format and lint C++ code.
    ```bash
    # Install clang-format and clang-tidy
