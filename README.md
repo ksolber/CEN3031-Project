@@ -55,6 +55,7 @@ To ensure a consistent development environment, this project is developed on **U
   ```bash
   # Install clang-format and clang-tidy
   sudo apt install clang-format clang-tidy
+  ```
 
 ## Installation & Setup
 
