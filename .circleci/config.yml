@@ -7,7 +7,7 @@ version: 2.1
 jobs:
   build-and-test:
     docker:
-      - image: cimg/base:2024.03
+      - image: cimg/base:stable
 
     steps:
       - checkout
