@@ -13,5 +13,6 @@ dev = [
 ]
 
 [tool.taskipy.tasks]
-format = "ruff format ."
+format = "ruff format ." # Applies formatting, used for local fixes
+format-check = "ruff format --check ." # Checks for formatting, used in CI
 lint = "ruff check ."

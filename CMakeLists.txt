@@ -6,6 +6,7 @@ cmake_minimum_required(VERSION 3.15)
 project(GatorsKitchen LANGUAGES CXX)
 
 # Use C++17 standard for the application target
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -25,7 +26,19 @@ list(FILTER CORE_CXX_SOURCES EXCLUDE REGEX "main\\.cpp$")
 
 
 # 4. Formatting and Linting C++ and Python
-# Target for formatting C++ and Python at the same time
+# Target for formatting C++ and Python on ci/circleci
+add_custom_target(
+    check_format
+
+    # C++ formatting check: Fails if code is not formatted
+    COMMAND clang-format --dry-run --Werror -style=file ${ALL_CXX_SOURCE_FILES}
+
+    # Python formatting check: Fails if code is not formatted
+    COMMAND cmake -E chdir ${CMAKE_SOURCE_DIR} uv run task format-check
+    COMMENT "Checking C++ and Python code formatting..."
+)
+
+# Target for applying formatting on terminal
 add_custom_target(
     format
 
@@ -35,13 +48,10 @@ add_custom_target(
     # Python formatting
     COMMAND cmake -E chdir ${CMAKE_SOURCE_DIR} uv run task format
 
-    # Success message
-    COMMAND cmake -E echo "Successfully formatted C++ and Python code!"
-
     COMMENT "Formatting C++ and Python code..."
 )
 
-# Target for linting Python
+# Target for linting C++ and Python
 add_custom_target(
     lint
 
@@ -50,10 +60,6 @@ add_custom_target(
 
     # C++ linting
     COMMAND clang-tidy --quiet -p ${CMAKE_BINARY_DIR} ${ALL_CXX_SOURCE_FILES} -checks='bugprone-*,performance-*,-bugprone-easily-swappable-parameters,-performance-avoid-endl'
-
-    # Success message
-    COMMAND cmake -E echo "Successfully linted C++ and Python code!"
-    
     COMMENT "Linting C++ and Python code..."
 )
 

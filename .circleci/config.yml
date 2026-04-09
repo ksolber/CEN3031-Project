@@ -7,26 +7,58 @@ version: 2.1
 jobs:
   build-and-test:
     docker:
-      - image: cimg/base:current
+      - image: cimg/base:2024.03
+
     steps:
       - checkout
       
-      # Install C++ compiler and build tools
       - run:
-          name: Install dependencies
+          name: Install C++ and CMake dependencies
           command: |
             sudo apt-get update
-            sudo apt-get install -y build-essential g++ make
+            sudo apt-get install -y build-essential g++ make cmake clang-format-15 clang-tidy-15
+            sudo update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-15 100
+            sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-15 100
       
-      # Build your C++ project using make
       - run:
-          name: Build
-          command: make
-      
-      # Run tests (if you have them)
+          name: Install uv
+          command: |
+            curl -LsSf https://astral.sh/uv/install.sh | sh
+            echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> "$BASH_ENV"
+            source "$BASH_ENV"
+
       - run:
-          name: Run tests
-          command: make test  # or ./your_executable if you don't have a test target
+          name: Setup Python environment
+          command: |
+            uv venv || true
+            uv sync
+            echo 'export PATH="./.venv/bin:$PATH"' >> "$BASH_ENV"
+            source "$BASH_ENV"
+
+      - run:
+          name: Configure CMake project
+          command: |
+            mkdir build
+            cd build
+            cmake ..
+
+      - run:
+          name: Build C++ Project
+          command: |
+            cd build
+            cmake --build .
+
+      - run:
+          name: Run Format Checks (C++ and Python)
+          command: |
+            cd build
+            cmake --build . --target check_format
+
+      - run:
+          name: Run Lint Checks (C++ and Python)
+          command: |
+            cd build
+            cmake --build . --target lint
 
 workflows:
   build-and-test-workflow:
