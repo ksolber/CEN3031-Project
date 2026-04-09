@@ -18,7 +18,7 @@ For students who need a fast and trustworthy way to find food assistance. Gators
 - **Languages:** C++, Python
 - **Database:** MySQL
 - **External Integrations:**
-  - External Map URL Schemes (Google Maps / Apple Maps redirection)
+  - External Map (Google Maps / Apple Maps redirection)
   - Student Authentication System
 
 ## Prerequisites
@@ -40,23 +40,27 @@ To ensure a consistent development environment, this project is developed on **U
    curl -LsSf https://astral.sh/uv/install.sh | sh
    ```
 
-4. **Python 3**: Required for running Python.
+4. **Python**: Required for running Python.
    ```bash
-   # Install Python 3
-   sudo apt update && sudo apt install python3 python3-venv
+   sudo apt update && sudo apt install python3 python3-venv python3-dev
    ```
    **Check the version of Python**: Check if the Python is installed Correctly.
    ```bash
    python3 --version
    ```
 
-5. **C++ Build Tools**: Required for local C++ compilation.
+5. **CMake**: Required for generating build system from `CMakeLists.txt`.
+   ```bash
+   sudo apt update && sudo apt install cmake
+   ```
+
+6. **C++ Build Tools**: Required for local C++ compilation.
    ```bash
    # Install essential build tools
    sudo apt update && sudo apt install build-essential
    ```
    
-6. **C++ Formatting & Linting Tools**: Required for `make format` and `make lint` commands to format and lint C++ code.
+7. **C++ Formatting & Linting Tools**: Required for `make format` and `make lint` commands to format and lint C++ code.
    ```bash
    # Install clang-format and clang-tidy
    sudo apt install clang-format clang-tidy
@@ -86,23 +90,28 @@ To ensure a consistent development environment, this project is developed on **U
    ```
 
 4. **Python Dependencies (uv):**
-   Set up your isolated Python environment:
+   Set up Python environment and install dependencies:
    ```bash
-   uv venv
+   uv sync
    source .venv/bin/activate
-   # Install dependencies (when added later)
-   # uv pip install -r requirements.txt
+   ```
+
+5. **Build System Setup (CMake):**
+   Generate the build system (e.g., Makefiles) from `CMakeLists.txt`.
+   ```bash
+   # From the project root directory:
+   mkdir build
+   cd build
+   cmake ..
    ```
 
 ## Formatting & Linting
 
-Before committing your changes or submitting a Pull Request, please run the formatting and linting checks. These commands will automatically format and lint both C++ (`clang-format`, `clang-tidy`) and Python (`uv`) code at the same time.
-If your project currently has no Python (`.py`) files, the Python checks will be safely skipped without causing an error.
+Before committing, please make sure to run the formatting and linting checks in build directory:
 
 ```bash
 # Format C++ and Python code
 make format
-
 # Lint C++ and Python code
 make lint
 ```
@@ -114,7 +123,7 @@ To run the automated tests for the project:
 make test
 ```
 
-To build and run the main application (GatorsKitchen):
+To build and run the main application:
 ```bash
 # Build the application
 make build
@@ -125,12 +134,15 @@ make run
 
 ## Development Guidelines
 
-- **Branch Naming**: `name/type/short-description`
-  - `feature`: New features (e.g., `name/feature/add-login`)
-  - `bugfix`: Bug fixes (e.g., `name/bugfix/db-connection`)
+- **Branch Naming**: `name/type/short-description` (e.g., `John/feature/add-filter-logic`)
+- *Types*
+  - `feature`: New features
+  - `fix`: Bug fixes
   - `refactor`: Code improvements (without changing functionality)
   - `docs`: Documentation updates
-- **Pull request & Commit Messages**: `type: brief description`
+
+- **Pull request & Commit Messages**: `type: brief description` (e.g., `feature: implement filter logic`)
+- *Types*
   - `feature:` A new feature
   - `fix:` A bug fix
   - `docs:` Documentation changes

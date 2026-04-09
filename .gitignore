@@ -54,3 +54,21 @@ build/
 # Python cache
 .ruff_cache/
 __pycache__/
+
+# Linux Executables
+MyProject
+MyTest
+test_pantry
+
+# CMake & LSP
+compile_commands.json
+.cache/
+.clangd/
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+
+# Python (Additional)
+*.pyc
+.env
+.pytest_cache/
