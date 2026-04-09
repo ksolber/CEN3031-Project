@@ -16,9 +16,7 @@ jobs:
           name: Install C++ and CMake dependencies
           command: |
             sudo apt-get update
-            sudo apt-get install -y build-essential g++ make cmake clang-format-15 clang-tidy-15
-            sudo update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-15 100
-            sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-15 100
+            sudo apt-get install -y build-essential g++ make cmake clang-format clang-tidy
       
       - run:
           name: Install uv
