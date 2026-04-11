@@ -62,8 +62,10 @@ To ensure a consistent development environment, this project is developed on **U
    
 7. **C++ Formatting & Linting Tools**: Required for `make format` and `make lint` commands to format and lint C++ code.
    ```bash
-   # Install clang-format and clang-tidy
-   sudo apt install clang-format clang-tidy
+   # Install clang-format and clang-tidy (version 17)
+   sudo apt install clang-format-17 clang-tidy-17
+   sudo update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-17 100
+   sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-17 100
    ```
 
 ## Installation & Setup
@@ -93,21 +95,17 @@ To ensure a consistent development environment, this project is developed on **U
    Set up Python environment and install dependencies:
    ```bash
    uv sync
-   source .venv/bin/activate
    ```
 
 5. **Build System Setup (CMake):**
    Generate the build system (e.g., Makefiles) from `CMakeLists.txt`.
    ```bash
-   # From the project root directory:
-   mkdir build
-   cd build
-   cmake ..
+   cmake -B build -S .
    ```
 
 ## Formatting & Linting
 
-Before committing, please make sure to run the formatting and linting checks in build directory:
+Before committing, please make sure to run the formatting and linting checks:
 
 ```bash
 # Format C++ and Python code

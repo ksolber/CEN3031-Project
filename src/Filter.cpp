@@ -1,4 +1,5 @@
 #include "Filter.h"
+
 #include "Pantry.h"
 
 using namespace std;
@@ -34,8 +35,7 @@ bool matchesFilters(const Pantry &p, const FilterOptions &f) {
   return true;
 }
 
-vector<Pantry> filterPantries(const vector<Pantry> &pantries,
-                              const FilterOptions &f) {
+vector<Pantry> filterPantries(const vector<Pantry> &pantries, const FilterOptions &f) {
   vector<Pantry> results;
 
   for (const Pantry &pantry : pantries) {

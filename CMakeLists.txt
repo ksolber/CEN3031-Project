@@ -1,11 +1,14 @@
 # 1. Specify the minimum required version of CMake
 cmake_minimum_required(VERSION 3.15)
 
+if(CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
+    message(FATAL_ERROR "In-source builds are not allowed. Please use: cmake -B build -S .")
+endif()
 
 # 2. Define the project name and the language used (C++)
 project(GatorsKitchen LANGUAGES CXX)
 
-# Use C++17 standard for the application target
+# Set C++17 as the project-wide standard
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -13,88 +16,73 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # Enable testing
 enable_testing()
 
-
-# 3. Integrate clang-tidy
+# 3. Export compile_commands.json for clang-tidy
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# Find all C++ source and header files for formatting/linting
-file(GLOB_RECURSE ALL_CXX_SOURCE_FILES CONFIGURE_DEPENDS "src/*.[ch]pp" "src/*.[ch]" "tests/*.[ch]pp" "tests/*.[ch]")
-
-# Find core library files
-file(GLOB_RECURSE CORE_CXX_SOURCES CONFIGURE_DEPENDS "src/*.[ch]pp" "src/*.[ch]")
-list(FILTER CORE_CXX_SOURCES EXCLUDE REGEX "main\\.cpp$")
-
-
-# 4. Formatting and Linting C++ and Python
-# Target for formatting C++ and Python on ci/circleci
-add_custom_target(
-    check_format
-
-    # C++ formatting check: Fails if code is not formatted
-    COMMAND clang-format --dry-run --Werror -style=file ${ALL_CXX_SOURCE_FILES}
-
-    # Python formatting check: Fails if code is not formatted
-    COMMAND cmake -E chdir ${CMAKE_SOURCE_DIR} uv run task format-check
-    COMMENT "Checking C++ and Python code formatting..."
+# Explicitly list source files
+set(CORE_CXX_SOURCES
+    src/Filter.cpp
+    src/Pantry.cpp
+    src/PantryLoader.cpp
 )
 
-# Target for applying formatting on terminal
+set(ALL_CXX_SOURCE_FILES
+    ${CORE_CXX_SOURCES}
+    src/main.cpp
+    src/Filter.h
+    src/Pantry.h
+    src/PantryLoader.h
+    tests/test_pantry_status.cpp
+)
+
+# 4. Linting and Formatting C++
 add_custom_target(
     format
-
-    # C++ formatting
     COMMAND clang-format -i -style=file ${ALL_CXX_SOURCE_FILES}
-
-    # Python formatting
-    COMMAND cmake -E chdir ${CMAKE_SOURCE_DIR} uv run task format
-
-    COMMENT "Formatting C++ and Python code..."
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    COMMENT "Formatting C++ code..."
 )
 
-# Target for linting C++ and Python
 add_custom_target(
     lint
-
-    # Python linting
-    COMMAND cmake -E chdir ${CMAKE_SOURCE_DIR} uv run task lint
-
-    # C++ linting
-    COMMAND clang-tidy --quiet -p ${CMAKE_BINARY_DIR} ${ALL_CXX_SOURCE_FILES} -checks='bugprone-*,performance-*,-bugprone-easily-swappable-parameters,-performance-avoid-endl'
-    COMMENT "Linting C++ and Python code..."
+    COMMAND clang-tidy -p ${CMAKE_BINARY_DIR} ${ALL_CXX_SOURCE_FILES}
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    COMMENT "Linting C++ code..."
 )
-
 
 # 5. Build Targets
 
 # Core library containing all business logic
 add_library(gators_core STATIC ${CORE_CXX_SOURCES})
 target_include_directories(gators_core PUBLIC src)
-target_compile_features(gators_core PUBLIC cxx_std_17)
+
+# Add compiler warning options (for GCC/Clang)
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    target_compile_options(gators_core PRIVATE -Wall -Wextra -Wpedantic -Wconversion)
+endif()
 
 # Main executable
-add_executable(MyProject src/main.cpp)
-target_link_libraries(MyProject PRIVATE gators_core)
+add_executable(GatorsKitchenApp src/main.cpp)
+target_link_libraries(GatorsKitchenApp PRIVATE gators_core)
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    target_compile_options(GatorsKitchenApp PRIVATE -Wall -Wextra -Wpedantic -Wconversion)
+endif()
 
 # Test executable
-add_executable(MyTest tests/test_pantry_status.cpp)
-target_link_libraries(MyTest PRIVATE gators_core)
+add_executable(GatorsKitchenTest tests/test_pantry_status.cpp)
+target_link_libraries(GatorsKitchenTest PRIVATE gators_core)
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    target_compile_options(GatorsKitchenTest PRIVATE -Wall -Wextra -Wpedantic -Wconversion)
+endif()
 
 # Register the test
-add_test(NAME PantryStatusTest COMMAND MyTest)
+add_test(NAME PantryStatusTest COMMAND GatorsKitchenTest)
 
-
-# 6. Sync Python dependencies with uv after the C++ build finishes
-add_custom_command(
-    TARGET MyProject POST_BUILD
-    COMMAND cmake -E chdir ${CMAKE_SOURCE_DIR} uv sync
-    COMMENT "Syncing Python dependencies with uv..."
-)
-
-# 7. Target to run the main application from the project root directory
+# 6. Target to run the main application from the project root directory
 add_custom_target(
     run
-    COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target MyProject
-    COMMAND cmake -E chdir ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR}/MyProject
-    COMMENT "Running the MyProject application..."
-    DEPENDS MyProject
+    COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target GatorsKitchenApp
+    COMMAND cmake -E chdir ${CMAKE_SOURCE_DIR} $<TARGET_FILE:GatorsKitchenApp>
+    COMMENT "Running the application..."
+    DEPENDS GatorsKitchenApp
 )

@@ -68,8 +68,7 @@ string extractDescription(const string &block) {
 
   string descriptionBlock = match[1].str();
   regex stringPattern("\"([^\"]*)\"");
-  sregex_iterator begin(descriptionBlock.begin(), descriptionBlock.end(),
-                        stringPattern);
+  sregex_iterator begin(descriptionBlock.begin(), descriptionBlock.end(), stringPattern);
   sregex_iterator end;
 
   string description;
@@ -138,7 +137,7 @@ Pantry parsePantryBlock(const string &block) {
 
   return pantry;
 }
-} // namespace
+}  // namespace
 
 vector<Pantry> loadPantriesFromLocationFile(const string &filename) {
   vector<Pantry> pantries;

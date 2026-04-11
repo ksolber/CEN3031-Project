@@ -1,6 +1,7 @@
 #pragma once
-#include "Pantry.h"
 #include <vector>
+
+#include "Pantry.h"
 
 using namespace std;
 
@@ -17,5 +18,4 @@ struct FilterOptions {
 };
 
 bool matchesFilters(const Pantry &p, const FilterOptions &f);
-vector<Pantry> filterPantries(const vector<Pantry> &pantries,
-                              const FilterOptions &f);
+vector<Pantry> filterPantries(const vector<Pantry> &pantries, const FilterOptions &f);

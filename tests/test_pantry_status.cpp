@@ -1,7 +1,8 @@
-#include "Pantry.h"
 #include <cassert>
 #include <iostream>
 #include <string>
+
+#include "Pantry.h"
 
 // TEST-01
 // Verify that a user can successfully view the current availability status of
