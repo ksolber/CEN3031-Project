@@ -7,7 +7,7 @@
 *.o
 *.obj
 
-# Precompiled header
+# Precompiled Headers
 *.gch
 *.pch
 
@@ -30,38 +30,19 @@
 # IDE - Visual Studio Code
 .vscode/
 
-# IDE - Visual Studio
-.vs/
-*.user
-*.suo
-*.db
-*.opendb
-
 # OS generated files
 .DS_Store
 Thumbs.db
 
 # Temporary files
 *~
-#*#
 *.swp
-.fuse_hidden*
-.~lock.*
-
-# Log files
 *.log
 
 # Build artifacts
 build/
 
-# Python virtual environment
-.venv/
-
-# Python cache
-.ruff_cache/
-__pycache__/
-
-# CMake & LSP
+# CMake
 compile_commands.json
 .cache/
 .clangd/
@@ -69,12 +50,14 @@ CMakeCache.txt
 CMakeFiles/
 cmake_install.cmake
 
-# Python (Additional)
+# Python virtual environment
+.venv/
+
+# Python cache
+.ruff_cache/
+__pycache__/
 *.pyc
-.env
 .pytest_cache/
 
-# Python Packaging
-dist/
-*.egg-info/
-.eggs/
+# Environment variables
+.env

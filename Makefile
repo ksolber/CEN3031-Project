@@ -17,10 +17,12 @@ run: configure
 format: configure
 	cmake --build $(BUILD_DIR) --target format
 	uv run task format
+	@echo "Successfully formatted Python code."
 
 lint: configure
 	cmake --build $(BUILD_DIR) --target lint
 	uv run task lint
+	@echo "Successfully linted Python code."
 
 clean:
 	rm -rf $(BUILD_DIR)

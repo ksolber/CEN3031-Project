@@ -39,6 +39,7 @@ set(ALL_CXX_SOURCE_FILES
 add_custom_target(
     format
     COMMAND clang-format -i -style=file ${ALL_CXX_SOURCE_FILES}
+    COMMAND ${CMAKE_COMMAND} -E echo "Successfully formatted C++ code."
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     COMMENT "Formatting C++ code..."
 )
@@ -46,6 +47,7 @@ add_custom_target(
 add_custom_target(
     lint
     COMMAND clang-tidy -p ${CMAKE_BINARY_DIR} ${ALL_CXX_SOURCE_FILES}
+    COMMAND ${CMAKE_COMMAND} -E echo "Successfully linted C++ code."
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     COMMENT "Linting C++ code..."
 )
