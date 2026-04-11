@@ -3,7 +3,6 @@ version: 2.1
 jobs:
   build-and-test:
     docker:
-      # cimg/python includes basic C++ compilers and python, perfect for this project
       - image: cimg/python:3.12
 
     steps:
