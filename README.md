@@ -44,7 +44,7 @@ To ensure a consistent development environment, this project is developed on **U
    ```bash
    sudo apt update && sudo apt install python3 python3-venv python3-dev
    ```
-   **Check the version of Python**: Check if the Python is installed Correctly.
+   **Check the version of Python**: Check if Python is installed correctly.
    ```bash
    python3 --version
    ```
