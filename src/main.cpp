@@ -15,8 +15,17 @@ int main() {
     return 1;
   }
 
+  // TODO: Replace with actual user location from UI later
+  const double userLat = 29.6516;
+  const double userLon = -82.3248;
+
+  for (Pantry &pantry : pantries) {
+    pantry.distanceFromUser = calcDistance(userLat, userLon, pantry.latitude, pantry.longitude);
+  }
+
   FilterOptions filters;
   filters.requireVegetarian = true;
+  filters.maxDistance = 5.0;
 
   vector<Pantry> results = filterPantries(pantries, filters);
 
@@ -34,6 +43,7 @@ int main() {
     cout << "Kosher: " << (p.kosher ? "Yes" : "No") << '\n';
     cout << "Carnivore: " << (p.carnivore ? "Yes" : "No") << '\n';
     cout << "Accessible: " << (p.handicapAccessible ? "Yes" : "No") << '\n';
+    cout << "Distance: " << p.distanceFromUser << " miles\n";
     cout << "----------------------------------\n";
   }
 
