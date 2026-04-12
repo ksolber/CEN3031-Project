@@ -37,13 +37,13 @@ int main() {
     cout << "Name: " << p.name << '\n';
     cout << "Address: " << p.address << '\n';
     cout << "Hours: " << p.hours << '\n';
+    cout << "Distance: " << p.distanceFromUser << " miles\n";
     cout << "Vegan: " << (p.vegan ? "Yes" : "No") << '\n';
     cout << "Vegetarian: " << (p.vegetarian ? "Yes" : "No") << '\n';
     cout << "Halal: " << (p.halal ? "Yes" : "No") << '\n';
     cout << "Kosher: " << (p.kosher ? "Yes" : "No") << '\n';
     cout << "Carnivore: " << (p.carnivore ? "Yes" : "No") << '\n';
     cout << "Accessible: " << (p.handicapAccessible ? "Yes" : "No") << '\n';
-    cout << "Distance: " << p.distanceFromUser << " miles\n";
     cout << "----------------------------------\n";
   }
 
