@@ -132,16 +132,17 @@ make run
 
 ## Development Guidelines
 
-- **Branch Naming**: `name/type/short-description` (e.g., `John/feature/add-filter-logic`)
-- *Types*
-  - `feature`: New features
-  - `fix`: Bug fixes
-  - `refactor`: Code improvements (without changing functionality)
-  - `docs`: Documentation updates
+### Branch Naming
 
-- **Pull request & Commit Messages**: `type: brief description` (e.g., `feature: implement filter logic`)
-- *Types*
-  - `feature:` A new feature
-  - `fix:` A bug fix
-  - `docs:` Documentation changes
-  - `refactor:` Code improvements
+`name/type/short-description` (e.g., `john/feature/add-filter-logic`)
+
+### Commit Messages
+
+`type: brief description` (e.g., `feature: implement filter logic`)
+
+### Types
+
+- `feature` — New features
+- `fix` — Bug fixes
+- `refactor` — Code improvements (without changing functionality)
+- `docs` — Documentation updates
