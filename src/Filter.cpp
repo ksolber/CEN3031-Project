@@ -29,8 +29,9 @@ bool matchesFilters(const Pantry &p, const FilterOptions &f) {
     return false;
   }
 
-  // if (f.maxDistance >= 0.0
-  //&& p.latitude > f.maxDistance) { return false; } // (wip)
+  if (f.maxDistance >= 0.0 && p.distanceFromUser > f.maxDistance) {
+    return false;
+  }
 
   return true;
 }
