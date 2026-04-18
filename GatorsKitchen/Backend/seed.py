@@ -7,8 +7,9 @@ LOCATIONS = [
         "latitude": 29.6452,
         "longitude": -82.3487,
         "description": (
-            "Free food pantry operated by UF offering bread, nonperishable canned goods, "
-            "frozen meat, and seasonal produce from the Field & Fork Farm and Gardens. "
+            "Free food pantry operated by UF offering bread, nonperishable "
+            "canned goods, frozen meat, and seasonal produce from the Field & Fork "
+            "Farm and Gardens. "
             "No proof of need required - just swipe your UF ID."
         ),
         "hours": "Mon-Fri 10:00am - 4:00pm",
