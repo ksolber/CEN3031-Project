@@ -1,0 +1,109 @@
+from database import get_connection, init_db
+
+LOCATIONS = [
+    {
+        "name": "Hitchcock Field & Fork Pantry",
+        "address": "564 Newell Dr, Gainesville, FL 32603",
+        "latitude": 29.6452,
+        "longitude": -82.3487,
+        "description": (
+            "Free food pantry operated by UF offering bread, nonperishable canned goods, "
+            "frozen meat, and seasonal produce from the Field & Fork Farm and Gardens. "
+            "No proof of need required - just swipe your UF ID."
+        ),
+        "hours": "Mon-Fri 10:00am - 4:00pm",
+        "eligibility": "Any UF student, faculty, or staff with a valid UF ID",
+        "phone": "(352) 294-3666",
+        "email": "fieldandfork@ufl.edu",
+        "website": "https://pantry.fieldandfork.ufl.edu"
+    },
+    {
+        "name": "Krishna Lunch at Plaza of the Americas",
+        "address": "Plaza of the Americas, University of Florida, Gainesville, FL 32611",
+        "latitude": 29.6481,
+        "longitude": -82.3440,
+        "description": (
+            "All-you-can-eat vegetarian and vegan lunch served outdoors at the Plaza of the "
+            "Americas by the Hare Krishna community. A Gainesville tradition since 1971. "
+            "Small suggested donation (~$5-6); no one is turned away for lack of funds."
+        ),
+        "hours": "Mon-Fri 11:00am - 1:30pm",
+        "eligibility": "Open to everyone - students, faculty, and community members",
+        "phone": "(352) 224-3090",
+        "email": None,
+        "website": "https://krishnalunch.com"
+    },
+    {
+        "name": "Gainesville Free Grocery Store",
+        "address": "433 S Main St, Gainesville, FL 32601",
+        "latitude": 29.6499,
+        "longitude": -82.3249,
+        "description": (
+            "All-volunteer mutual aid food pantry distributing free groceries at the "
+            "Civic Media Center. Shoppers pick their own groceries (10-15 lbs per person). "
+            "Typically includes fresh produce, bread/pastries, and nonperishables. "
+            "No ID or proof of address required."
+        ),
+        "hours": "2nd and 4th Tuesdays of the month, ~3:00pm - 5:30pm (numbers given at 1:30pm)",
+        "eligibility": "Open to all - no ID or residency proof required",
+        "phone": None,
+        "email": None,
+        "website": "https://gnvfgs.org"
+    },
+    {
+        "name": "Bread of the Mighty Food Bank",
+        "address": "325 NW 10th Ave, Gainesville, FL 32601",
+        "latitude": 29.6572,
+        "longitude": -82.3346,
+        "description": (
+            "Regional food bank distributing donated food and essentials to over 110 "
+            "nonprofit partner agencies across Alachua, Gilchrist, Levy, and Union counties. "
+            "Individuals should contact them or visit a partner agency for direct food access."
+        ),
+        "hours": "Mon-Fri 8:00am - 4:00pm",
+        "eligibility": "Serves partner nonprofits directly; community members contact them for referrals",
+        "phone": "(352) 336-0839",
+        "email": "contact@breadofthemighty.org",
+        "website": "https://breadofthemighty.org"
+    },
+    {
+        "name": "Gainesville Community Ministry (GCM) Food Pantry",
+        "address": "238 SW 4th Ave, Gainesville, FL 32601",
+        "latitude": 29.6468,
+        "longitude": -82.3306,
+        "description": (
+            "Emergency food pantry providing a 2-day food supply to households in need. "
+            "Clients may visit once every 28 days. Must apply in person. "
+            "Serves the elderly, disabled, homeless, and working poor with families."
+        ),
+        "hours": "Mon-Thu 9:00am - 12:00pm",
+        "eligibility": "Alachua County residents; photo ID and Social Security card required",
+        "phone": "(352) 372-8162",
+        "email": "info@gcmhelp.org",
+        "website": "https://gcmhelp.org"
+    },
+]
+
+def seed():
+    init_db()
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    for loc in LOCATIONS:
+        cursor.execute("""
+            INSERT INTO locations
+                (name, address, latitude, longitude, description,
+                 hours, eligibility, phone, email, website)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (
+            loc["name"], loc["address"], loc["latitude"], loc["longitude"],
+            loc["description"], loc["hours"], loc["eligibility"],
+            loc["phone"], loc["email"], loc["website"]
+        ))
+
+    conn.commit()
+    conn.close()
+    print(f"Seeded {len(LOCATIONS)} locations.")
+
+if __name__ == "__main__":
+    seed()
