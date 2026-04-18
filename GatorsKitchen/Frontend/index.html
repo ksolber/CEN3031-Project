@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GatorsKitchen</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Georgia, serif;
+      background: #f5f0e8;
+      color: #2c2c2c;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #003087; 
+      color: white;
+      padding: 1.5rem 2rem;
+    }
+
+    header h1 { font-size: 1.8rem; }
+    header p  { opacity: 0.8; margin-top: 0.25rem; font-size: 0.95rem; }
+
+    main {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    #loading { text-align: center; padding: 3rem; color: #666; }
+
+    .location-card {
+      background: white;
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      cursor: pointer;
+      transition: box-shadow 0.2s;
+    }
+
+    .location-card:hover { box-shadow: 0 3px 12px rgba(0,0,0,0.12); }
+
+    .location-card h2 { font-size: 1.1rem; color: #003087; }
+    .location-card .address { color: #666; font-size: 0.9rem; margin-top: 0.2rem; }
+    .location-card .hours   { font-size: 0.85rem; margin-top: 0.5rem; color: #444; }
+
+    /* Modal */
+    #modal-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.45);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #modal-overlay.open { display: flex; }
+
+    #modal {
+      background: white;
+      border-radius: 10px;
+      padding: 2rem;
+      max-width: 540px;
+      width: 90%;
+      position: relative;
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+
+    #modal h2 { color: #003087; margin-bottom: 1rem; }
+
+    #modal .detail-row {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.6rem;
+      font-size: 0.92rem;
+    }
+
+    #modal .detail-row .label {
+      font-weight: bold;
+      min-width: 90px;
+      color: #555;
+    }
+
+    #modal a { color: #003087; }
+
+    #close-btn {
+      position: absolute;
+      top: 1rem; right: 1rem;
+      background: none;
+      border: none;
+      font-size: 1.4rem;
+      cursor: pointer;
+      color: #666;
+    }
+
+    #close-btn:hover { color: #000; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>🌽 GatorsKitchen</h1>
+  <p>Free and reduced-cost food resources for students and community members near UF</p>
+</header>
+
+<main>
+  <div id="loading">Loading locations...</div>
+  <div id="location-list"></div>
+</main>
+
+<!-- Detail Modal -->
+<div id="modal-overlay">
+  <div id="modal">
+    <button id="close-btn" onclick="closeModal()">✕</button>
+    <h2 id="modal-name"></h2>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+  async function loadLocations() {
+    const res = await fetch("/api/locations");
+    const locations = await res.json();
+
+    const list = document.getElementById("location-list");
+    document.getElementById("loading").style.display = "none";
+
+    if (locations.length === 0) {
+      list.innerHTML = "<p style='color:#666'>No locations found.</p>";
+      return;
+    }
+
+    locations.forEach(loc => {
+      const card = document.createElement("div");
+      card.className = "location-card";
+      card.innerHTML = `
+        <h2>${loc.name}</h2>
+        <div class="address">📍 ${loc.address}</div>
+        ${loc.hours ? `<div class="hours">🕐 ${loc.hours}</div>` : ""}
+      `;
+      card.addEventListener("click", () => openModal(loc));
+      list.appendChild(card);
+    });
+  }
+
+  function openModal(loc) {
+    document.getElementById("modal-name").textContent = loc.name;
+
+    const fields = [
+      ["Address",     loc.address],
+      ["Hours",       loc.hours],
+      ["Eligibility", loc.eligibility],
+      ["Description", loc.description],
+      ["Phone",       loc.phone],
+      ["Email",       loc.email ? `<a href="mailto:${loc.email}">${loc.email}</a>` : null],
+      ["Website",     loc.website ? `<a href="${loc.website}" target="_blank">${loc.website}</a>` : null],
+    ];
+
+    const body = document.getElementById("modal-body");
+    body.innerHTML = fields
+      .filter(([, val]) => val)
+      .map(([label, val]) => `
+        <div class="detail-row">
+          <span class="label">${label}</span>
+          <span>${val}</span>
+        </div>
+      `).join("");
+
+    document.getElementById("modal-overlay").classList.add("open");
+  }
+
+  function closeModal() {
+    document.getElementById("modal-overlay").classList.remove("open");
+  }
+
+  // Close modal if clicking outside
+  document.getElementById("modal-overlay").addEventListener("click", e => {
+    if (e.target === document.getElementById("modal-overlay")) closeModal();
+  });
+
+  loadLocations();
+</script>
+
+</body>
+</html>
