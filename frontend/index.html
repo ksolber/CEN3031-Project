@@ -103,8 +103,19 @@
       color: white;
     }
 
-    .map-btn.google { background: #4285F4; }
-    .map-btn.apple  { background: #555; }
+    .directions-btn {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.5rem 1.25rem;
+      background: #4285F4;
+      color: #fff;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .directions-btn:hover { background: #1557BF; }
 
     #close-btn {
       position: absolute;
@@ -169,8 +180,12 @@
   function openModal(loc) {
     document.getElementById("modal-name").textContent = loc.name;
 
+    const geoHref = (loc.latitude && loc.longitude)
+      ? `geo:${loc.latitude},${loc.longitude}`
+      : `https://maps.google.com/?q=${encodeURIComponent(loc.address)}`;
+
     const fields = [
-      ["Address",     loc.address],
+      ["Address",     `<a href="${geoHref}">${loc.address}</a>`],
       ["Hours",       loc.hours],
       ["Eligibility", loc.eligibility],
       ["Description", loc.description],
@@ -178,6 +193,10 @@
       ["Email",       loc.email ? `<a href="mailto:${loc.email}">${loc.email}</a>` : null],
       ["Website",     loc.website ? `<a href="${loc.website}" target="_blank">${loc.website}</a>` : null],
     ];
+
+    const googleUrl = (loc.latitude && loc.longitude)
+      ? `https://www.google.com/maps/search/?api=1&query=${loc.latitude},${loc.longitude}`
+      : `https://maps.google.com/?q=${encodeURIComponent(loc.address)}`;
 
     const body = document.getElementById("modal-body");
     body.innerHTML = fields
@@ -189,18 +208,8 @@
         </div>
       `).join("");
 
-    // Map buttons
-    const query = (loc.latitude && loc.longitude)
-      ? `${loc.latitude},${loc.longitude}`
-      : encodeURIComponent(loc.address);
-    const googleUrl = `https://www.google.com/maps/search/?api=1&query=${query}`;
-    const appleUrl  = `https://maps.apple.com/?q=${query}`;
-
     body.innerHTML += `
-      <div class="map-buttons">
-        <a class="map-btn google" href="${googleUrl}" target="_blank" rel="noopener">Google Maps</a>
-        <a class="map-btn apple"  href="${appleUrl}"  target="_blank" rel="noopener">Apple Maps</a>
-      </div>
+      <a class="directions-btn" href="${googleUrl}" target="_blank" rel="noopener">Directions</a>
     `;
 
     document.getElementById("modal-overlay").classList.add("open");
