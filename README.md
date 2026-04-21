@@ -16,7 +16,7 @@ For students who need a fast and trustworthy way to find food assistance. Gators
 ## Tech Stack
 
 - **Languages:** C++, Python
-- **Database:** MySQL
+- **Database:** MySQL (production) / SQLite (development prototype)
 - **External Integrations:**
   - External Map (Google Maps / Apple Maps redirection)
   - Student Authentication System
