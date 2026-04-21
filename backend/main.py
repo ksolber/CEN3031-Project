@@ -125,8 +125,10 @@ def create_location(location: Location):
         """
         INSERT INTO locations
             (name, address, latitude, longitude, description,
-             hours, eligibility, phone, email, website)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+             hours, eligibility, phone, email, website,
+             halal, kosher, vegan, vegetarian, carnivore,
+             handicap_accessible, notes, is_open)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     """,
         (
             location.name,
@@ -139,6 +141,14 @@ def create_location(location: Location):
             location.phone,
             location.email,
             location.website,
+            location.halal,
+            location.kosher,
+            location.vegan,
+            location.vegetarian,
+            location.carnivore,
+            location.handicap_accessible,
+            location.notes,
+            location.is_open,
         ),
     )
 
