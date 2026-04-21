@@ -61,6 +61,7 @@ def get_all_locations(
     vegetarian: Optional[bool] = None,
     carnivore: Optional[bool] = None,
     handicap_accessible: Optional[bool] = None,
+    is_open: Optional[bool] = None,
     max_distance: Optional[float] = None,
     user_lat: Optional[float] = None,
     user_lon: Optional[float] = None,
@@ -74,6 +75,7 @@ def get_all_locations(
         ("vegetarian", vegetarian),
         ("carnivore", carnivore),
         ("handicap_accessible", handicap_accessible),
+        ("is_open", is_open),
     ]:
         if value is True:
             conditions.append(f"{field} = 1")
