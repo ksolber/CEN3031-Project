@@ -1,3 +1,4 @@
+import math
 from typing import Optional
 
 from database import get_connection, init_db
@@ -5,6 +6,20 @@ from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
+
+
+def haversine(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
+    """Returns the distance in miles between two coordinates."""
+    earth_radius_miles = 3958.8
+    to_rad = math.pi / 180.0
+    dlat = (lat2 - lat1) * to_rad
+    dlon = (lon2 - lon1) * to_rad
+    a = (
+        math.sin(dlat / 2) ** 2
+        + math.cos(lat1 * to_rad) * math.cos(lat2 * to_rad) * math.sin(dlon / 2) ** 2
+    )
+    return earth_radius_miles * 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+
 
 app = FastAPI(title="GatorsKitchen API")
 
