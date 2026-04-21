@@ -108,6 +108,13 @@ To ensure a consistent development environment, this project is developed on **U
    cmake -B build -S .
    ```
 
+## Ports
+
+| Port | Service              |
+|------|----------------------|
+| 3306 | MySQL (database)     |
+| 8000 | FastAPI (web server) |
+
 ## Formatting & Linting
 
 Before committing, please make sure to run the formatting and linting checks:
