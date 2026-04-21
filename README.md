@@ -154,3 +154,4 @@ make run
 - `fix` — Bug fixes
 - `refactor` — Code improvements (without changing functionality)
 - `docs` — Documentation updates
+- `chore` — Maintenance tasks (dependencies, build tools, config)
