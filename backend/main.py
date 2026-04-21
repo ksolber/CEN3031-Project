@@ -27,6 +27,14 @@ class Location(BaseModel):
     phone: Optional[str] = None
     email: Optional[str] = None
     website: Optional[str] = None
+    halal: bool = False
+    kosher: bool = False
+    vegan: bool = False
+    vegetarian: bool = False
+    carnivore: bool = False
+    handicap_accessible: bool = False
+    notes: Optional[str] = None
+    is_open: bool = False
 
 
 # Routes
