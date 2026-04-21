@@ -7,7 +7,7 @@
 *.o
 *.obj
 
-# Precompiled header
+# Precompiled Headers
 *.gch
 *.pch
 
@@ -15,10 +15,6 @@
 *.so
 *.dylib
 *.dll
-
-# Fortran module files
-*.mod
-*.smod
 
 # Compiled Static libraries
 *.lai
@@ -34,16 +30,34 @@
 # IDE - Visual Studio Code
 .vscode/
 
-# IDE - Visual Studio
-.vs/
-*.user
-*.suo
-*.db
-*.opendb
-
 # OS generated files
 .DS_Store
 Thumbs.db
 
+# Temporary files
+*~
+*.swp
+*.log
+
 # Build artifacts
 build/
+
+# CMake
+compile_commands.json
+.cache/
+.clangd/
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+
+# Python virtual environment
+.venv/
+
+# Python cache
+.ruff_cache/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Environment variables
+.env

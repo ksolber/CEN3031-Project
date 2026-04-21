@@ -1,0 +1,14 @@
+---
+
+Checks: >
+  -*,
+  clang-analyzer-*,
+  clang-diagnostic-*,
+  bugprone-*,
+  -bugprone-narrowing-conversions,
+  -bugprone-easily-swappable-parameters,
+
+WarningsAsErrors: '*'
+HeaderFilterRegex: '.*'
+FormatStyle: none
+...
