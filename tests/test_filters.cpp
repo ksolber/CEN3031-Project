@@ -1,4 +1,4 @@
-#include "Pantry.h"   // change to "pantry.h" if your repo uses lowercase
+#include "Pantry.h"   
 #include "Filter.h"
 
 #include <cassert>
@@ -8,7 +8,7 @@
 
 using namespace std;
 
-Pantry makePantry(const string& name, double distanceFromUser, bool halal, bool kosher, bool vegan, bool vegetarian, bool carnivore, bool handicapAccessible)
+Pantry makePantry(const string& name, double distanceFromUser = 0.0, bool halal = false, bool kosher = false, bool vegan = false, bool vegetarian = false, bool carnivore = false, bool handicapAccessible = false)
 {
     Pantry pantry;
     pantry.name = name;
@@ -19,6 +19,7 @@ Pantry makePantry(const string& name, double distanceFromUser, bool halal, bool 
     pantry.vegetarian = vegetarian;
     pantry.carnivore = carnivore;
     pantry.handicapAccessible = handicapAccessible;
+    
     return pantry;
 }
 
@@ -124,7 +125,7 @@ void testNoMatchingResults()
 }
 
 
-//----------------DISTANCE-TESTS-------------------------
+//----------------DISTANCE-TESTS-------------------------//
 
 // TEST-08 - Verify that the system displays only pantries within the selected max distance.
 void testDistanceFilterOnly() {
@@ -166,9 +167,9 @@ void testDistanceFilterExcludesFarPantries() {
 // TEST-03 - Verify that the system correctly applies distance and vegetarian filters together.
 void testDistanceAndVegetarianFilter() {
   vector<Pantry> pantries;
-  pantries.push_back(makePantry("Pantry A", 2.5, false, true));
-  pantries.push_back(makePantry("Pantry B", 6.0, false, true));
-  pantries.push_back(makePantry("Pantry C", 3.0, false, false));
+  pantries.push_back(makePantry("Pantry A", 2.5, false, false, false, true));
+  pantries.push_back(makePantry("Pantry B", 6.0, false, false, false, true));
+  pantries.push_back(makePantry("Pantry C", 3.0, false, false, false, false));
 
   FilterOptions filters;
   filters.maxDistance = 5.0;
@@ -185,9 +186,9 @@ void testDistanceAndVegetarianFilter() {
 // TEST-04 - Verify that the system correctly applies distance and accessibility filters together.
 void testDistanceAndAccessibilityFilter() {
   vector<Pantry> pantries;
-  pantries.push_back(makePantry("Pantry A", 1.0, false, false, true));
-  pantries.push_back(makePantry("Pantry B", 2.0, false, false, false));
-  pantries.push_back(makePantry("Pantry C", 7.0, false, false, true));
+  pantries.push_back(makePantry("Pantry A", 1.0, false, false, false, false, false, true));
+  pantries.push_back(makePantry("Pantry B", 2.0, false, false, false, false, false, false));
+  pantries.push_back(makePantry("Pantry C", 7.0, false, false, false, false, false, true));
 
   FilterOptions filters;
   filters.maxDistance = 5.0;
@@ -225,6 +226,13 @@ int main()
     testMultipleFilters();
     testKosherFilter();
     testNoMatchingResults();
+
+    //Distance
+    testDistanceFilterOnly();
+    testDistanceFilterExcludesFarPantries();
+    testDistanceAndVegetarianFilter();
+    testDistanceAndAccessibilityFilter();
+    testDistanceFilterNoMatches();
 
     cout << "All filter tests successfully passed" << endl;
     return 0;
