@@ -1,4 +1,5 @@
 import math
+from pathlib import Path
 from typing import Optional
 
 from database import get_connection, init_db
@@ -229,9 +230,10 @@ def delete_location(location_id: int):
 
 
 # Serve the frontend
-app.mount("/static", StaticFiles(directory="../frontend/static"), name="static")
+FRONTEND_DIR = Path(__file__).parent.parent / "frontend"
+app.mount("/static", StaticFiles(directory=str(FRONTEND_DIR / "static")), name="static")
 
 
 @app.get("/")
 def serve_frontend():
-    return FileResponse("../frontend/index.html")
+    return FileResponse(str(FRONTEND_DIR / "index.html"))
