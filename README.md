@@ -121,6 +121,14 @@ To run the automated tests for the project:
 make test
 ```
 
+To start the FastAPI development server:
+
+```bash
+uv run task dev
+```
+
+The API will be available at `http://localhost:8000`.
+
 To build and run the main application:
 ```bash
 # Build the application
