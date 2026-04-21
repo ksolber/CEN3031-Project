@@ -1,3 +1,5 @@
+import math
+from pathlib import Path
 from typing import Optional
 
 from database import get_connection, init_db
@@ -5,6 +7,20 @@ from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
+
+
+def haversine(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
+    """Returns the distance in miles between two coordinates."""
+    earth_radius_miles = 3958.8
+    to_rad = math.pi / 180.0
+    dlat = (lat2 - lat1) * to_rad
+    dlon = (lon2 - lon1) * to_rad
+    a = (
+        math.sin(dlat / 2) ** 2
+        + math.cos(lat1 * to_rad) * math.cos(lat2 * to_rad) * math.sin(dlon / 2) ** 2
+    )
+    return earth_radius_miles * 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+
 
 app = FastAPI(title="GatorsKitchen API")
 
@@ -27,16 +43,65 @@ class Location(BaseModel):
     phone: Optional[str] = None
     email: Optional[str] = None
     website: Optional[str] = None
+    halal: bool = False
+    kosher: bool = False
+    vegan: bool = False
+    vegetarian: bool = False
+    carnivore: bool = False
+    handicap_accessible: bool = False
+    notes: Optional[str] = None
+    is_open: bool = False
 
 
 # Routes
 @app.get("/api/locations")
-def get_all_locations():
-    """Returns a list of all locations."""
+def get_all_locations(
+    halal: Optional[bool] = None,
+    kosher: Optional[bool] = None,
+    vegan: Optional[bool] = None,
+    vegetarian: Optional[bool] = None,
+    carnivore: Optional[bool] = None,
+    handicap_accessible: Optional[bool] = None,
+    is_open: Optional[bool] = None,
+    max_distance: Optional[float] = None,
+    user_lat: Optional[float] = None,
+    user_lon: Optional[float] = None,
+):
+    """Returns locations, optionally filtered by dietary flags and distance."""
+    conditions = []
+    for field, value in [
+        ("halal", halal),
+        ("kosher", kosher),
+        ("vegan", vegan),
+        ("vegetarian", vegetarian),
+        ("carnivore", carnivore),
+        ("handicap_accessible", handicap_accessible),
+        ("is_open", is_open),
+    ]:
+        if value is True:
+            conditions.append(f"{field} = 1")
+
+    query = "SELECT * FROM locations"
+    if conditions:
+        query += " WHERE " + " AND ".join(conditions)
+
     conn = get_connection()
-    rows = conn.execute("SELECT * FROM locations").fetchall()
+    rows = conn.execute(query).fetchall()
     conn.close()
-    return [dict(row) for row in rows]
+
+    results = [dict(row) for row in rows]
+
+    if max_distance is not None and user_lat is not None and user_lon is not None:
+        results = [
+            r
+            for r in results
+            if r["latitude"] is not None
+            and r["longitude"] is not None
+            and haversine(user_lat, user_lon, r["latitude"], r["longitude"])
+            <= max_distance
+        ]
+
+    return results
 
 
 @app.get("/api/locations/{location_id}")
@@ -63,8 +128,10 @@ def create_location(location: Location):
         """
         INSERT INTO locations
             (name, address, latitude, longitude, description,
-             hours, eligibility, phone, email, website)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+             hours, eligibility, phone, email, website,
+             halal, kosher, vegan, vegetarian, carnivore,
+             handicap_accessible, notes, is_open)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     """,
         (
             location.name,
@@ -77,6 +144,14 @@ def create_location(location: Location):
             location.phone,
             location.email,
             location.website,
+            location.halal,
+            location.kosher,
+            location.vegan,
+            location.vegetarian,
+            location.carnivore,
+            location.handicap_accessible,
+            location.notes,
+            location.is_open,
         ),
     )
 
@@ -103,7 +178,9 @@ def update_location(location_id: int, location: Location):
         """
         UPDATE locations SET
             name=?, address=?, latitude=?, longitude=?, description=?,
-            hours=?, eligibility=?, phone=?, email=?, website=?
+            hours=?, eligibility=?, phone=?, email=?, website=?,
+            halal=?, kosher=?, vegan=?, vegetarian=?, carnivore=?,
+            handicap_accessible=?, notes=?, is_open=?
         WHERE id=?
     """,
         (
@@ -117,6 +194,14 @@ def update_location(location_id: int, location: Location):
             location.phone,
             location.email,
             location.website,
+            location.halal,
+            location.kosher,
+            location.vegan,
+            location.vegetarian,
+            location.carnivore,
+            location.handicap_accessible,
+            location.notes,
+            location.is_open,
             location_id,
         ),
     )
@@ -145,9 +230,10 @@ def delete_location(location_id: int):
 
 
 # Serve the frontend
-app.mount("/static", StaticFiles(directory="../frontend/static"), name="static")
+FRONTEND_DIR = Path(__file__).parent.parent / "frontend"
+app.mount("/static", StaticFiles(directory=str(FRONTEND_DIR / "static")), name="static")
 
 
 @app.get("/")
 def serve_frontend():
-    return FileResponse("../frontend/index.html")
+    return FileResponse(str(FRONTEND_DIR / "index.html"))

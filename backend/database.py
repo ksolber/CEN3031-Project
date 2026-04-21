@@ -1,6 +1,7 @@
 import sqlite3
+from pathlib import Path
 
-DB_PATH = "food_finder.db"
+DB_PATH = str(Path(__file__).parent / "food_finder.db")
 
 
 def get_connection():
@@ -17,17 +18,27 @@ def init_db():
 
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS locations (
-            id          INTEGER PRIMARY KEY AUTOINCREMENT,
-            name        TEXT NOT NULL,
-            address     TEXT NOT NULL,
-            latitude    REAL,
-            longitude   REAL,
-            description TEXT,
-            hours       TEXT,
-            eligibility TEXT,
-            phone       TEXT,
-            email       TEXT,
-            website     TEXT
+            id                   INTEGER PRIMARY KEY AUTOINCREMENT,
+            name                 TEXT NOT NULL,
+            address              TEXT NOT NULL,
+            latitude             REAL,
+            longitude            REAL,
+            halal                INTEGER DEFAULT 0,
+            kosher               INTEGER DEFAULT 0,
+            vegan                INTEGER DEFAULT 0,
+            vegetarian           INTEGER DEFAULT 0,
+            carnivore            INTEGER DEFAULT 0,
+            handicap_accessible  INTEGER DEFAULT 0,
+            appointment_required INTEGER DEFAULT 0,
+            student_only         INTEGER DEFAULT 0,
+            hours                TEXT,
+            description          TEXT,
+            eligibility          TEXT,
+            phone                TEXT,
+            email                TEXT,
+            website              TEXT,
+            notes                TEXT,
+            is_open              INTEGER DEFAULT 0
         )
     """)
 
