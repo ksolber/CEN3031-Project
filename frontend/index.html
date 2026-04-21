@@ -189,6 +189,20 @@
         </div>
       `).join("");
 
+    // Map buttons
+    const query = (loc.latitude && loc.longitude)
+      ? `${loc.latitude},${loc.longitude}`
+      : encodeURIComponent(loc.address);
+    const googleUrl = `https://www.google.com/maps/search/?api=1&query=${query}`;
+    const appleUrl  = `https://maps.apple.com/?q=${query}`;
+
+    body.innerHTML += `
+      <div class="map-buttons">
+        <a class="map-btn google" href="${googleUrl}" target="_blank" rel="noopener">Google Maps</a>
+        <a class="map-btn apple"  href="${appleUrl}"  target="_blank" rel="noopener">Apple Maps</a>
+      </div>
+    `;
+
     document.getElementById("modal-overlay").classList.add("open");
   }
 
