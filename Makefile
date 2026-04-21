@@ -19,9 +19,9 @@ APP_OBJECT = $(BUILD_DIR)/main.o
 APP_EXEC = $(BUILD_DIR)/GatorsKitchenApp
 
 # Find all source files in the src directory
-SOURCES = $(wildcard $(SRC_DIR)/*.cpp)
+# SOURCES = $(wildcard $(SRC_DIR)/*.cpp)
 # Create a list of object files for the sources, to be placed in the build directory
-OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(SOURCES))
+# OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(SOURCES))
 
 # Find all test source files in the tests directory
 TEST_SOURCES = $(wildcard $(TEST_DIR)/test_*.cpp)
