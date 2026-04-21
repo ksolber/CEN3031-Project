@@ -175,7 +175,9 @@ def update_location(location_id: int, location: Location):
         """
         UPDATE locations SET
             name=?, address=?, latitude=?, longitude=?, description=?,
-            hours=?, eligibility=?, phone=?, email=?, website=?
+            hours=?, eligibility=?, phone=?, email=?, website=?,
+            halal=?, kosher=?, vegan=?, vegetarian=?, carnivore=?,
+            handicap_accessible=?, notes=?, is_open=?
         WHERE id=?
     """,
         (
@@ -189,6 +191,14 @@ def update_location(location_id: int, location: Location):
             location.phone,
             location.email,
             location.website,
+            location.halal,
+            location.kosher,
+            location.vegan,
+            location.vegetarian,
+            location.carnivore,
+            location.handicap_accessible,
+            location.notes,
+            location.is_open,
             location_id,
         ),
     )
