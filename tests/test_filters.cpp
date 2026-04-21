@@ -12,6 +12,7 @@ Pantry makePantry(const string& name, double distanceFromUser, bool halal, bool 
 {
     Pantry pantry;
     pantry.name = name;
+    pantry.distanceFromUser = distanceFromUser;
     pantry.halal = halal;
     pantry.kosher = kosher;
     pantry.vegan = vegan;
