@@ -4,11 +4,7 @@ version = "0.1.0"
 description = "A C++ and Python project"
 readme = "README.md"
 requires-python = ">=3.10"
-dependencies = [
-    "fastapi",
-    "uvicorn[standard]",
-    "pydantic",
-]
+dependencies = []
 
 [dependency-groups]
 dev = [
@@ -20,7 +16,6 @@ dev = [
 [tool.taskipy.tasks]
 format = "ruff format ."
 lint = "ruff check ."
-dev = "uvicorn main:app --reload --app-dir backend"
 
 [tool.ruff]
 target-version = "py310"

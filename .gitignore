@@ -61,6 +61,3 @@ __pycache__/
 
 # Environment variables
 .env
-
-# SQLite database files
-*.db
