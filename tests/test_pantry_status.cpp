@@ -1,7 +1,8 @@
-#include "Pantry.h"
 #include <cassert>
 #include <iostream>
 #include <string>
+
+#include "Pantry.h"
 
 // TEST-01
 // Verify that a user can successfully view the current availability status of
@@ -37,7 +38,7 @@ void testPantryIsUnavailable() {
   std::cout << "TEST-02 Passed: Pantry is Unavailable." << std::endl;
 }
 
-int testMain() {
+int main() {
   testPantryIsAvailable();
   testPantryIsUnavailable();
   return 0;
