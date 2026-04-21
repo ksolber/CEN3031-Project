@@ -1,6 +1,7 @@
 import sqlite3
+from pathlib import Path
 
-DB_PATH = "food_finder.db"
+DB_PATH = str(Path(__file__).parent / "food_finder.db")
 
 
 def get_connection():
