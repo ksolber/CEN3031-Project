@@ -9,6 +9,15 @@ SRC_DIR = src
 TEST_DIR = tests
 BUILD_DIR = build
 
+# Exclude main.cpp from shared objects used by tests
+SOURCES = $(filter-out $(SRC_DIR)/main.cpp, $(wildcard $(SRC_DIR)/*.cpp))
+OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(SOURCES))
+
+# Optional app target
+APP_SOURCE = $(SRC_DIR)/main.cpp
+APP_OBJECT = $(BUILD_DIR)/main.o
+APP_EXEC = $(BUILD_DIR)/GatorsKitchenApp
+
 # Find all source files in the src directory
 SOURCES = $(wildcard $(SRC_DIR)/*.cpp)
 # Create a list of object files for the sources, to be placed in the build directory
