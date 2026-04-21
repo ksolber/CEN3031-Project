@@ -180,12 +180,12 @@
   function openModal(loc) {
     document.getElementById("modal-name").textContent = loc.name;
 
-    const geoHref = (loc.latitude && loc.longitude)
-      ? `geo:${loc.latitude},${loc.longitude}`
+    const mapsUrl = (loc.latitude && loc.longitude)
+      ? `https://www.google.com/maps/search/?api=1&query=${loc.latitude},${loc.longitude}`
       : `https://maps.google.com/?q=${encodeURIComponent(loc.address)}`;
 
     const fields = [
-      ["Address",     `<a href="${geoHref}">${loc.address}</a>`],
+      ["Address",     `<a href="${mapsUrl}" target="_blank" rel="noopener">${loc.address}</a>`],
       ["Hours",       loc.hours],
       ["Eligibility", loc.eligibility],
       ["Description", loc.description],
@@ -193,10 +193,6 @@
       ["Email",       loc.email ? `<a href="mailto:${loc.email}">${loc.email}</a>` : null],
       ["Website",     loc.website ? `<a href="${loc.website}" target="_blank">${loc.website}</a>` : null],
     ];
-
-    const googleUrl = (loc.latitude && loc.longitude)
-      ? `https://www.google.com/maps/search/?api=1&query=${loc.latitude},${loc.longitude}`
-      : `https://maps.google.com/?q=${encodeURIComponent(loc.address)}`;
 
     const body = document.getElementById("modal-body");
     body.innerHTML = fields
@@ -207,10 +203,6 @@
           <span>${val}</span>
         </div>
       `).join("");
-
-    body.innerHTML += `
-      <a class="directions-btn" href="${googleUrl}" target="_blank" rel="noopener">Directions</a>
-    `;
 
     document.getElementById("modal-overlay").classList.add("open");
   }
