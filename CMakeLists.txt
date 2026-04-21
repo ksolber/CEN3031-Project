@@ -33,6 +33,7 @@ set(ALL_CXX_SOURCE_FILES
     src/Pantry.h
     src/PantryLoader.h
     tests/test_pantry_status.cpp
+    tests/test_filters.cpp
 )
 
 # 4. Linting and Formatting C++
@@ -77,8 +78,16 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
     target_compile_options(GatorsKitchenTest PRIVATE -Wall -Wextra -Wpedantic -Wconversion)
 endif()
 
-# Register the test
+# Test executable: test_filters
+add_executable(GatorsKitchenFilterTest tests/test_filters.cpp)
+target_link_libraries(GatorsKitchenFilterTest PRIVATE gators_core)
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    target_compile_options(GatorsKitchenFilterTest PRIVATE -Wall -Wextra -Wpedantic -Wconversion)
+endif()
+
+# Register the tests
 add_test(NAME PantryStatusTest COMMAND GatorsKitchenTest)
+add_test(NAME FilterTest COMMAND GatorsKitchenFilterTest)
 
 # 6. Target to run the main application from the project root directory
 add_custom_target(
