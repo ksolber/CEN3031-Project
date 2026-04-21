@@ -8,7 +8,7 @@
 
 using namespace std;
 
-Pantry makePantry(const string& name, bool halal, bool kosher, bool vegan, bool vegetarian, bool carnivore, bool handicapAccessible)
+Pantry makePantry(const string& name, double distanceFromUser, bool halal, bool kosher, bool vegan, bool vegetarian, bool carnivore, bool handicapAccessible)
 {
     Pantry pantry;
     pantry.name = name;
