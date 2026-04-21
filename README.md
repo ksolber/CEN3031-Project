@@ -90,6 +90,11 @@ To ensure a consistent development environment, this project is developed on **U
    ```bash
    docker compose up -d
    ```
+   To verify the container is running:
+
+   ```bash
+   docker compose ps
+   ```
 
 4. **Python Dependencies (uv):**
    Set up Python environment and install dependencies:
