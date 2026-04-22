@@ -160,3 +160,14 @@ vector<Pantry> loadPantriesFromLocationFile(const string &filename) {
 
   return pantries;
 }
+
+vector<Pantry> loadPantriesFromLocationFile(const string &filename, double userLat,
+                                            double userLong) {
+  vector<Pantry> pantries = loadPantriesFromLocationFile(filename);
+
+  for (Pantry &pantry : pantries) {
+    pantry.distanceFromUser = calcDistance(userLat, userLong, pantry.latitude, pantry.longitude);
+  }
+
+  return pantries;
+}
