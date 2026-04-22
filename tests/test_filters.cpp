@@ -10,7 +10,8 @@ using namespace std;
 
 Pantry makePantry(const string& name, double distanceFromUser = 0.0, bool halal = false,
                   bool kosher = false, bool vegan = false, bool vegetarian = false,
-                  bool carnivore = false, bool handicapAccessible = false, bool servesAllergens = false) {
+                  bool carnivore = false, bool handicapAccessible = false,
+                  bool servesAllergens = false) {
   Pantry pantry;
   pantry.name = name;
   pantry.distanceFromUser = distanceFromUser;
@@ -21,7 +22,7 @@ Pantry makePantry(const string& name, double distanceFromUser = 0.0, bool halal 
   pantry.carnivore = carnivore;
   pantry.handicapAccessible = handicapAccessible;
   pantry.servesAllergens = servesAllergens;
-  
+
   return pantry;
 }
 
@@ -218,23 +219,22 @@ void testDistanceFilterNoMatches() {
 }
 
 // TEST-06 - Verify that pantries with allergen recipes do not appear
-void testExcludeAllergenMenusFilter()
-{
-    vector<Pantry> pantries;
+void testExcludeAllergenMenusFilter() {
+  vector<Pantry> pantries;
 
-    pantries.push_back(makePantry("Pantry A", 0.0, false, false, false, false, false, false, true));
-    pantries.push_back(makePantry("Pantry B", 0.0, false, false, false, false, false, false, false));
-    pantries.push_back(makePantry("Pantry C", 0.0, false, false, false, false, false, false, true));
+  pantries.push_back(makePantry("Pantry A", 0.0, false, false, false, false, false, false, true));
+  pantries.push_back(makePantry("Pantry B", 0.0, false, false, false, false, false, false, false));
+  pantries.push_back(makePantry("Pantry C", 0.0, false, false, false, false, false, false, true));
 
-    FilterOptions filters;
-    filters.excludeAllergenMenus = true;
+  FilterOptions filters;
+  filters.excludeAllergenMenus = true;
 
-    vector<Pantry> results = filterPantries(pantries, filters);
+  vector<Pantry> results = filterPantries(pantries, filters);
 
-    assert(results.size() == 1);
-    assert(results[0].name == "Pantry B");
+  assert(results.size() == 1);
+  assert(results[0].name == "Pantry B");
 
-    cout << "TEST Passed: No-allergen menu filter successful." << endl;
+  cout << "TEST Passed: No-allergen menu filter successful." << endl;
 }
 
 int main() {
