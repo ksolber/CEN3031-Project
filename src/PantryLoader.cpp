@@ -137,7 +137,7 @@ Pantry parsePantryBlock(const string &block) {
 
   return pantry;
 }
-}  //namespace
+}  // namespace
 
 vector<Pantry> loadPantriesFromLocationFile(const string &filename) {
   vector<Pantry> pantries;
@@ -161,12 +161,12 @@ vector<Pantry> loadPantriesFromLocationFile(const string &filename) {
   return pantries;
 }
 
-vector<Pantry> loadPantriesFromLocationFile(const string &filename, double userLat, double userLong) {
+vector<Pantry> loadPantriesFromLocationFile(const string &filename, double userLat,
+                                            double userLong) {
   vector<Pantry> pantries = loadPantriesFromLocationFile(filename);
 
   for (Pantry &pantry : pantries) {
-    pantry.distanceFromUser =
-        calcDistance(userLat, userLong, pantry.latitude, pantry.longitude);
+    pantry.distanceFromUser = calcDistance(userLat, userLong, pantry.latitude, pantry.longitude);
   }
 
   return pantries;

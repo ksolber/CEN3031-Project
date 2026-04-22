@@ -1,129 +1,127 @@
-#include "Pantry.h"   
-#include "Filter.h"
-
 #include <cassert>
 #include <iostream>
 #include <string>
 #include <vector>
 
+#include "Filter.h"
+#include "Pantry.h"
+
 using namespace std;
 
-Pantry makePantry(const string& name, double distanceFromUser = 0.0, bool halal = false, bool kosher = false, bool vegan = false, bool vegetarian = false, bool carnivore = false, bool handicapAccessible = false)
-{
-    Pantry pantry;
-    pantry.name = name;
-    pantry.distanceFromUser = distanceFromUser;
-    pantry.halal = halal;
-    pantry.kosher = kosher;
-    pantry.vegan = vegan;
-    pantry.vegetarian = vegetarian;
-    pantry.carnivore = carnivore;
-    pantry.handicapAccessible = handicapAccessible;
-    
-    return pantry;
+Pantry makePantry(const string& name, double distanceFromUser = 0.0, bool halal = false,
+                  bool kosher = false, bool vegan = false, bool vegetarian = false,
+                  bool carnivore = false, bool handicapAccessible = false) {
+  Pantry pantry;
+  pantry.name = name;
+  pantry.distanceFromUser = distanceFromUser;
+  pantry.halal = halal;
+  pantry.kosher = kosher;
+  pantry.vegan = vegan;
+  pantry.vegetarian = vegetarian;
+  pantry.carnivore = carnivore;
+  pantry.handicapAccessible = handicapAccessible;
+
+  return pantry;
 }
 
-// TEST-03 - Verify that the system displays only pantries with handicap-accessible entry when the accessibility filter is selected.
-void testHandicapAccessibleFilter()
-{
-    vector<Pantry> pantries;
-    pantries.push_back(makePantry("Pantry A", false, false, false, false, false, true));
-    pantries.push_back(makePantry("Pantry B", false, false, false, false, false, false));
-    pantries.push_back(makePantry("Pantry C", false, false, false, false, false, true));
+// TEST-03 - Verify that the system displays only pantries with handicap-accessible entry when the
+// accessibility filter is selected.
+void testHandicapAccessibleFilter() {
+  vector<Pantry> pantries;
+  pantries.push_back(makePantry("Pantry A", false, false, false, false, false, true));
+  pantries.push_back(makePantry("Pantry B", false, false, false, false, false, false));
+  pantries.push_back(makePantry("Pantry C", false, false, false, false, false, true));
 
-    FilterOptions filters;
-    filters.requireHandicapAccessible = true;
+  FilterOptions filters;
+  filters.requireHandicapAccessible = true;
 
-    vector<Pantry> results = filterPantries(pantries, filters);
+  vector<Pantry> results = filterPantries(pantries, filters);
 
-    assert(results.size() == 2);
-    assert(results[0].name == "Pantry A");
-    assert(results[1].name == "Pantry C");
+  assert(results.size() == 2);
+  assert(results[0].name == "Pantry A");
+  assert(results[1].name == "Pantry C");
 
-    cout << "TEST-03 Passed: Handicap-accessible entry filter successful." << endl;
+  cout << "TEST-03 Passed: Handicap-accessible entry filter successful." << endl;
 }
 
-// TEST-04 - Verify that the system displays only pantries with vegan options when the vegan filter is selected.
-void testVeganFilter()
-{
-    vector<Pantry> pantries;
-    pantries.push_back(makePantry("Pantry A", false, false, true, false, false, false));
-    pantries.push_back(makePantry("Pantry B", false, false, false, false, false, false));
-    pantries.push_back(makePantry("Pantry C", false, false, true, false, false, false));
+// TEST-04 - Verify that the system displays only pantries with vegan options when the vegan filter
+// is selected.
+void testVeganFilter() {
+  vector<Pantry> pantries;
+  pantries.push_back(makePantry("Pantry A", false, false, true, false, false, false));
+  pantries.push_back(makePantry("Pantry B", false, false, false, false, false, false));
+  pantries.push_back(makePantry("Pantry C", false, false, true, false, false, false));
 
-    FilterOptions filters;
-    filters.requireVegan = true;
+  FilterOptions filters;
+  filters.requireVegan = true;
 
-    vector<Pantry> results = filterPantries(pantries, filters);
+  vector<Pantry> results = filterPantries(pantries, filters);
 
-    assert(results.size() == 2);
-    assert(results[0].name == "Pantry A");
-    assert(results[1].name == "Pantry C");
+  assert(results.size() == 2);
+  assert(results[0].name == "Pantry A");
+  assert(results[1].name == "Pantry C");
 
-    cout << "TEST-04 Passed: Vegan filter successful." << endl;
+  cout << "TEST-04 Passed: Vegan filter successful." << endl;
 }
 
 // TEST-05 - Verify that the system correctly applies multiple filters at the same time.
-void testMultipleFilters()
-{
-    vector<Pantry> pantries;
+void testMultipleFilters() {
+  vector<Pantry> pantries;
 
-    pantries.push_back(makePantry("Pantry A", false, false, false, true, false, true));
-    pantries.push_back(makePantry("Pantry B", false, false, false, true, false, false));
-    pantries.push_back(makePantry("Pantry C", false, false, false, false, false, true));
+  pantries.push_back(makePantry("Pantry A", false, false, false, true, false, true));
+  pantries.push_back(makePantry("Pantry B", false, false, false, true, false, false));
+  pantries.push_back(makePantry("Pantry C", false, false, false, false, false, true));
 
-    FilterOptions filters;
-    filters.requireVegetarian = true;
-    filters.requireHandicapAccessible = true;
+  FilterOptions filters;
+  filters.requireVegetarian = true;
+  filters.requireHandicapAccessible = true;
 
-    vector<Pantry> results = filterPantries(pantries, filters);
+  vector<Pantry> results = filterPantries(pantries, filters);
 
-    assert(results.size() == 1);
-    assert(results[0].name == "Pantry A");
+  assert(results.size() == 1);
+  assert(results[0].name == "Pantry A");
 
-    cout << "TEST-05 Passed: Multiple filters work together." << endl;
+  cout << "TEST-05 Passed: Multiple filters work together." << endl;
 }
 
-// TEST-06 - Verify that the system displays only pantries with kosher options when the kosher filter is selected.
-void testKosherFilter()
-{
-    vector<Pantry> pantries;
+// TEST-06 - Verify that the system displays only pantries with kosher options when the kosher
+// filter is selected.
+void testKosherFilter() {
+  vector<Pantry> pantries;
 
-    pantries.push_back(makePantry("Pantry A", false, true, false, false, false, false));
-    pantries.push_back(makePantry("Pantry B", false, false, false, false, false, false));
-    pantries.push_back(makePantry("Pantry C", false, true, false, false, false, false));
+  pantries.push_back(makePantry("Pantry A", false, true, false, false, false, false));
+  pantries.push_back(makePantry("Pantry B", false, false, false, false, false, false));
+  pantries.push_back(makePantry("Pantry C", false, true, false, false, false, false));
 
-    FilterOptions filters;
-    filters.requireKosher = true;
+  FilterOptions filters;
+  filters.requireKosher = true;
 
-    vector<Pantry> results = filterPantries(pantries, filters);
+  vector<Pantry> results = filterPantries(pantries, filters);
 
-    assert(results.size() == 2);
-    assert(results[0].name == "Pantry A");
-    assert(results[1].name == "Pantry C");
+  assert(results.size() == 2);
+  assert(results[0].name == "Pantry A");
+  assert(results[1].name == "Pantry C");
 
-    cout << "TEST-06 Passed: Kosher filter successful." << endl;
+  cout << "TEST-06 Passed: Kosher filter successful." << endl;
 }
 
 // TEST-07 - Verify that the system returns no pantries when no pantry matches the selected filters.
-void testNoMatchingResults()
-{
-    vector<Pantry> pantries;
+void testNoMatchingResults() {
+  vector<Pantry> pantries;
 
-    pantries.push_back(makePantry("Pantry A", false, false, false, true, false, false));
-    pantries.push_back(makePantry("Pantry B", false, false, true, false, false, false));
+  pantries.push_back(makePantry("Pantry A", false, false, false, true, false, false));
+  pantries.push_back(makePantry("Pantry B", false, false, true, false, false, false));
 
-    FilterOptions filters;
-    filters.requireHalal = true;
-    filters.requireHandicapAccessible = true;
+  FilterOptions filters;
+  filters.requireHalal = true;
+  filters.requireHandicapAccessible = true;
 
-    vector<Pantry> results = filterPantries(pantries, filters);
+  vector<Pantry> results = filterPantries(pantries, filters);
 
-    assert(results.empty());
+  assert(results.empty());
 
-    cout << "TEST-07 Passed: No-match filter case successful." << endl;
+  cout << "TEST-07 Passed: No-match filter case successful." << endl;
 }
-
 
 //----------------DISTANCE-TESTS-------------------------//
 
@@ -218,22 +216,20 @@ void testDistanceFilterNoMatches() {
   cout << "TEST-05 Passed: No matches case for distance filter successful." << endl;
 }
 
+int main() {
+  testHandicapAccessibleFilter();
+  testVeganFilter();
+  testMultipleFilters();
+  testKosherFilter();
+  testNoMatchingResults();
 
-int main()
-{
-    testHandicapAccessibleFilter();
-    testVeganFilter();
-    testMultipleFilters();
-    testKosherFilter();
-    testNoMatchingResults();
+  // Distance
+  testDistanceFilterOnly();
+  testDistanceFilterExcludesFarPantries();
+  testDistanceAndVegetarianFilter();
+  testDistanceAndAccessibilityFilter();
+  testDistanceFilterNoMatches();
 
-    //Distance
-    testDistanceFilterOnly();
-    testDistanceFilterExcludesFarPantries();
-    testDistanceAndVegetarianFilter();
-    testDistanceAndAccessibilityFilter();
-    testDistanceFilterNoMatches();
-
-    cout << "All filter tests successfully passed" << endl;
-    return 0;
+  cout << "All filter tests successfully passed" << endl;
+  return 0;
 }
