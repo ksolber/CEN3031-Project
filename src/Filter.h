@@ -13,6 +13,7 @@ struct FilterOptions {
   bool requireVegetarian = false;
   bool requireCarnivore = false;
   bool requireHandicapAccessible = false;
+  bool excludeAllergenMenus = false;
 
   double maxDistance = -1.0;
 };
