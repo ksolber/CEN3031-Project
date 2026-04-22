@@ -133,6 +133,7 @@ Pantry parsePantryBlock(const string &block) {
   pantry.vegan = extractBoolValue(block, "vegan");
   pantry.vegetarian = extractBoolValue(block, "vegetarian");
   pantry.carnivore = extractBoolValue(block, "carnivore");
+  pantry.servesAllergens = extractBoolValue(block, "servesAllergens");
   pantry.handicapAccessible = extractBoolValue(block, "handicapAccessible");
 
   return pantry;
