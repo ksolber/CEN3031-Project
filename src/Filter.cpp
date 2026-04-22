@@ -33,6 +33,22 @@ bool matchesFilters(const Pantry &p, const FilterOptions &f) {
     return false;
   }
 
+  if (f.excludeAllergenMenus == true && p.servesAllergens == true) {
+  return false;
+  }
+
+  if (f.requireHandicapAccessible && p.handicapAccessible == false) {
+  return false;
+  }
+
+  if (f.excludeAllergenMenus && p.servesAllergens) {
+  return false;
+  }
+
+  if (f.maxDistance >= 0.0 && p.distanceFromUser > f.maxDistance) {
+  return false;
+  }
+  
   return true;
 }
 
