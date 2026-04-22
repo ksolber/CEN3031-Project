@@ -28,9 +28,9 @@ Pantry makePantry(const string& name, double distanceFromUser = 0.0, bool halal 
 // accessibility filter is selected.
 void testHandicapAccessibleFilter() {
   vector<Pantry> pantries;
-  pantries.push_back(makePantry("Pantry A", false, false, false, false, false, true));
-  pantries.push_back(makePantry("Pantry B", false, false, false, false, false, false));
-  pantries.push_back(makePantry("Pantry C", false, false, false, false, false, true));
+  pantries.push_back(makePantry("Pantry A", 0.0, false, false, false, false, false, true));
+  pantries.push_back(makePantry("Pantry B", 0.0, false, false, false, false, false, false));
+  pantries.push_back(makePantry("Pantry C", 0.0, false, false, false, false, false, true));
 
   FilterOptions filters;
   filters.requireHandicapAccessible = true;
@@ -48,9 +48,9 @@ void testHandicapAccessibleFilter() {
 // is selected.
 void testVeganFilter() {
   vector<Pantry> pantries;
-  pantries.push_back(makePantry("Pantry A", false, false, true, false, false, false));
-  pantries.push_back(makePantry("Pantry B", false, false, false, false, false, false));
-  pantries.push_back(makePantry("Pantry C", false, false, true, false, false, false));
+  pantries.push_back(makePantry("Pantry A", 0.0, false, false, true, false, false, false));
+  pantries.push_back(makePantry("Pantry B", 0.0, false, false, false, false, false, false));
+  pantries.push_back(makePantry("Pantry C", 0.0, false, false, true, false, false, false));
 
   FilterOptions filters;
   filters.requireVegan = true;
@@ -68,9 +68,9 @@ void testVeganFilter() {
 void testMultipleFilters() {
   vector<Pantry> pantries;
 
-  pantries.push_back(makePantry("Pantry A", false, false, false, true, false, true));
-  pantries.push_back(makePantry("Pantry B", false, false, false, true, false, false));
-  pantries.push_back(makePantry("Pantry C", false, false, false, false, false, true));
+  pantries.push_back(makePantry("Pantry A", 0.0, false, false, false, true, false, true));
+  pantries.push_back(makePantry("Pantry B", 0.0, false, false, false, true, false, false));
+  pantries.push_back(makePantry("Pantry C", 0.0, false, false, false, false, false, true));
 
   FilterOptions filters;
   filters.requireVegetarian = true;
@@ -89,9 +89,9 @@ void testMultipleFilters() {
 void testKosherFilter() {
   vector<Pantry> pantries;
 
-  pantries.push_back(makePantry("Pantry A", false, true, false, false, false, false));
-  pantries.push_back(makePantry("Pantry B", false, false, false, false, false, false));
-  pantries.push_back(makePantry("Pantry C", false, true, false, false, false, false));
+  pantries.push_back(makePantry("Pantry A", 0.0, false, true, false, false, false, false));
+  pantries.push_back(makePantry("Pantry B", 0.0, false, false, false, false, false, false));
+  pantries.push_back(makePantry("Pantry C", 0.0, false, true, false, false, false, false));
 
   FilterOptions filters;
   filters.requireKosher = true;
@@ -109,8 +109,8 @@ void testKosherFilter() {
 void testNoMatchingResults() {
   vector<Pantry> pantries;
 
-  pantries.push_back(makePantry("Pantry A", false, false, false, true, false, false));
-  pantries.push_back(makePantry("Pantry B", false, false, true, false, false, false));
+  pantries.push_back(makePantry("Pantry A", 0.0, false, false, false, true, false, false));
+  pantries.push_back(makePantry("Pantry B", 0.0, false, false, true, false, false, false));
 
   FilterOptions filters;
   filters.requireHalal = true;
