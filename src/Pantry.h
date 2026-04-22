@@ -20,6 +20,8 @@ struct Pantry {
   bool vegan;
   bool vegetarian;
   bool carnivore;
+  bool servesAllergens;
+
   bool handicapAccessible;
 
   // wip
