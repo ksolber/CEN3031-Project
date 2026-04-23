@@ -87,6 +87,51 @@
 
     #modal a { color: #003087; }
 
+
+    #map-picker {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 200;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    #map-picker.open { display: flex; }
+
+    #map-picker-inner {
+      background: white;
+      width: 100%;
+      border-radius: 16px 16px 0 0;
+      padding: 1.5rem;
+    }
+
+    #map-picker-inner p {
+      font-size: 0.85rem;
+      color: #888;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .map-picker-btn {
+      display: block;
+      width: 100%;
+      padding: 0.9rem;
+      margin-bottom: 0.75rem;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+    }
+
+    .map-picker-btn.google { background: #4285F4; color: #fff; }
+    .map-picker-btn.apple  { background: #FF3B30; color: #fff; }
+    .map-picker-btn.cancel { background: #f0f0f0; color: #333; }
+
     #close-btn {
       position: absolute;
       top: 1rem; right: 1rem;
@@ -111,6 +156,16 @@
   <div id="loading">Loading locations...</div>
   <div id="location-list"></div>
 </main>
+
+<!-- Map Picker (mobile) -->
+<div id="map-picker">
+  <div id="map-picker-inner">
+    <p>Open address in...</p>
+    <a id="picker-google" class="map-picker-btn google" target="_blank" rel="noopener">Google Maps</a>
+    <a id="picker-apple"  class="map-picker-btn apple"  target="_blank" rel="noopener">Apple Maps</a>
+    <button class="map-picker-btn cancel" onclick="closeMapPicker()">Cancel</button>
+  </div>
+</div>
 
 <!-- Detail Modal -->
 <div id="modal-overlay">
@@ -150,8 +205,20 @@
   function openModal(loc) {
     document.getElementById("modal-name").textContent = loc.name;
 
+    const googleUrl = (loc.latitude && loc.longitude)
+      ? `https://www.google.com/maps/search/?api=1&query=${loc.latitude},${loc.longitude}`
+      : `https://maps.google.com/?q=${encodeURIComponent(loc.address)}`;
+    const appleUrl = (loc.latitude && loc.longitude)
+      ? `https://maps.apple.com/?ll=${loc.latitude},${loc.longitude}`
+      : `https://maps.apple.com/?q=${encodeURIComponent(loc.address)}`;
+
+    const isMobile = navigator.maxTouchPoints > 0;
+    const addressLink = isMobile
+      ? `<a href="#" data-google="${googleUrl}" data-apple="${appleUrl}" class="map-address">${loc.address}</a>`
+      : `<a href="${googleUrl}" target="_blank" rel="noopener">${loc.address}</a>`;
+
     const fields = [
-      ["Address",     loc.address],
+      ["Address",     addressLink],
       ["Hours",       loc.hours],
       ["Eligibility", loc.eligibility],
       ["Description", loc.description],
@@ -176,6 +243,23 @@
   function closeModal() {
     document.getElementById("modal-overlay").classList.remove("open");
   }
+
+  function closeMapPicker() {
+    document.getElementById("map-picker").classList.remove("open");
+  }
+
+  document.addEventListener("click", e => {
+    const link = e.target.closest(".map-address");
+    if (!link) return;
+    e.preventDefault();
+    document.getElementById("picker-google").href = link.dataset.google;
+    document.getElementById("picker-apple").href  = link.dataset.apple;
+    document.getElementById("map-picker").classList.add("open");
+  });
+
+  document.getElementById("map-picker").addEventListener("click", e => {
+    if (e.target === document.getElementById("map-picker")) closeMapPicker();
+  });
 
   // Close modal if clicking outside
   document.getElementById("modal-overlay").addEventListener("click", e => {
