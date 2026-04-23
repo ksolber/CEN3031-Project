@@ -16,7 +16,7 @@ For students who need a fast and trustworthy way to find food assistance. Gators
 ## Tech Stack
 
 - **Languages:** C++, Python
-- **Database:** MySQL
+- **Database:** MySQL (production) / SQLite (development prototype)
 - **External Integrations:**
   - External Map (Google Maps / Apple Maps redirection)
   - Student Authentication System
@@ -90,6 +90,11 @@ To ensure a consistent development environment, this project is developed on **U
    ```bash
    docker compose up -d
    ```
+   To verify the container is running:
+
+   ```bash
+   docker compose ps
+   ```
 
 4. **Python Dependencies (uv):**
    Set up Python environment and install dependencies:
@@ -102,6 +107,13 @@ To ensure a consistent development environment, this project is developed on **U
    ```bash
    cmake -B build -S .
    ```
+
+## Ports
+
+| Port | Service              |
+|------|----------------------|
+| 3306 | MySQL (database)     |
+| 8000 | FastAPI (web server) |
 
 ## Formatting & Linting
 
@@ -120,6 +132,14 @@ To run the automated tests for the project:
 ```bash
 make test
 ```
+
+To start the FastAPI development server:
+
+```bash
+uv run task dev
+```
+
+The API will be available at `http://localhost:8000`.
 
 To build and run the main application:
 ```bash
@@ -146,3 +166,4 @@ make run
 - `fix` — Bug fixes
 - `refactor` — Code improvements (without changing functionality)
 - `docs` — Documentation updates
+- `chore` — Maintenance tasks (dependencies, build tools, config)

@@ -17,6 +17,14 @@ LOCATIONS = [
         "phone": "(352) 294-3666",
         "email": "fieldandfork@ufl.edu",
         "website": "https://pantry.fieldandfork.ufl.edu",
+        "halal": False,
+        "kosher": False,
+        "vegan": False,
+        "vegetarian": False,
+        "carnivore": False,
+        "handicap_accessible": False,
+        "notes": None,
+        "is_open": False,
     },
     {
         "name": "Krishna Lunch at Plaza of the Americas",
@@ -36,6 +44,14 @@ LOCATIONS = [
         "phone": "(352) 224-3090",
         "email": None,
         "website": "https://krishnalunch.com",
+        "halal": False,
+        "kosher": False,
+        "vegan": True,
+        "vegetarian": True,
+        "carnivore": False,
+        "handicap_accessible": False,
+        "notes": None,
+        "is_open": False,
     },
     {
         "name": "Gainesville Free Grocery Store",
@@ -56,6 +72,14 @@ LOCATIONS = [
         "phone": None,
         "email": None,
         "website": "https://gnvfgs.org",
+        "halal": False,
+        "kosher": False,
+        "vegan": False,
+        "vegetarian": False,
+        "carnivore": False,
+        "handicap_accessible": False,
+        "notes": None,
+        "is_open": False,
     },
     {
         "name": "Bread of the Mighty Food Bank",
@@ -76,6 +100,14 @@ LOCATIONS = [
         "phone": "(352) 336-0839",
         "email": "contact@breadofthemighty.org",
         "website": "https://breadofthemighty.org",
+        "halal": False,
+        "kosher": False,
+        "vegan": False,
+        "vegetarian": False,
+        "carnivore": False,
+        "handicap_accessible": False,
+        "notes": None,
+        "is_open": False,
     },
     {
         "name": "Gainesville Community Ministry (GCM) Food Pantry",
@@ -94,6 +126,14 @@ LOCATIONS = [
         "phone": "(352) 372-8162",
         "email": "info@gcmhelp.org",
         "website": "https://gcmhelp.org",
+        "halal": False,
+        "kosher": False,
+        "vegan": False,
+        "vegetarian": False,
+        "carnivore": False,
+        "handicap_accessible": False,
+        "notes": None,
+        "is_open": False,
     },
 ]
 
@@ -108,8 +148,10 @@ def seed():
             """
             INSERT INTO locations
                 (name, address, latitude, longitude, description,
-                 hours, eligibility, phone, email, website)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                 hours, eligibility, phone, email, website,
+                 halal, kosher, vegan, vegetarian, carnivore,
+                 handicap_accessible, notes, is_open)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """,
             (
                 loc["name"],
@@ -122,6 +164,14 @@ def seed():
                 loc["phone"],
                 loc["email"],
                 loc["website"],
+                loc["halal"],
+                loc["kosher"],
+                loc["vegan"],
+                loc["vegetarian"],
+                loc["carnivore"],
+                loc["handicap_accessible"],
+                loc["notes"],
+                loc["is_open"],
             ),
         )
 
